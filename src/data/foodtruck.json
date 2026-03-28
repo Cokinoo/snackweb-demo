@@ -1,0 +1,101 @@
+{
+  "plats": [
+    {
+      "id": "truck-001",
+      "nom": "Box carry poulet",
+      "description": "Carry poulet créole, riz, salade de chouchou, sauce piment",
+      "prix": 9.00,
+      "categorie": "Boxs",
+      "photo": "https://picsum.photos/seed/truck-poulet/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "truck-002",
+      "nom": "Box rougail saucisse",
+      "description": "Rougail saucisse fumée, riz blanc, grains du jour",
+      "prix": 8.50,
+      "categorie": "Boxs",
+      "photo": "https://picsum.photos/seed/truck-saucisse/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "truck-003",
+      "nom": "Box végétarien",
+      "description": "Carry légumes du jardin, riz complet, achards de légumes",
+      "prix": 7.50,
+      "categorie": "Boxs",
+      "photo": "https://picsum.photos/seed/truck-veggie/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "truck-004",
+      "nom": "Sandwich carry poulet",
+      "description": "Pain maison, carry poulet, salade, tomates, sauce chutney",
+      "prix": 6.50,
+      "categorie": "Sandwichs",
+      "photo": "https://picsum.photos/seed/truck-sandwich/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "truck-005",
+      "nom": "Bouchons x6",
+      "description": "6 bouchons vapeur porc ou crevette, sauce soja gingembre",
+      "prix": 5.00,
+      "categorie": "Street food",
+      "photo": "https://picsum.photos/seed/truck-bouchons/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "truck-006",
+      "nom": "Samoussa x4",
+      "description": "4 samoussas croustillants bœuf-légumes, sauce coriandre",
+      "prix": 4.00,
+      "categorie": "Street food",
+      "photo": "https://picsum.photos/seed/truck-samoussa/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "truck-007",
+      "nom": "Pâte à goyave",
+      "description": "Dessert maison à la goyave de La Réunion",
+      "prix": 2.50,
+      "categorie": "Desserts",
+      "photo": "https://picsum.photos/seed/truck-goyave/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "truck-008",
+      "nom": "Eau ou soda",
+      "description": "Eau minérale ou soda au choix",
+      "prix": 1.50,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/truck-boisson/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    }
+  ],
+  "creneaux": {
+    "intervalle": 10,
+    "dureeService": 15,
+    "capaciteParLot": 15
+  },
+  "parametres": {
+    "conserverPlats": true,
+    "horaires": [
+      { "jour": "lun", "ouverture": "11h30", "fermeture": "13h30", "service": "midi" },
+      { "jour": "mar", "ouverture": "11h30", "fermeture": "13h30", "service": "midi" },
+      { "jour": "mer", "ouverture": "11h30", "fermeture": "13h30", "service": "midi" },
+      { "jour": "jeu", "ouverture": "11h30", "fermeture": "13h30", "service": "midi" },
+      { "jour": "ven", "ouverture": "11h30", "fermeture": "13h30", "service": "midi" },
+      { "jour": "ven", "ouverture": "18h00", "fermeture": "20h30", "service": "soir" },
+      { "jour": "sam", "ouverture": "11h30", "fermeture": "14h00", "service": "midi" }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "plats": [
+    {
+      "id": "pizza-001",
+      "nom": "Pizza Péi",
+      "description": "Sauce tomate, mozzarella, rougail saucisse, oignons, piment bringelle",
+      "prix": 12.00,
+      "categorie": "Pizzas",
+      "photo": "https://picsum.photos/seed/pizza-pei/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "pizza-002",
+      "nom": "Pizza Crevettes Coco",
+      "description": "Crème coco, crevettes sautées, mangue fraîche, roquette",
+      "prix": 14.00,
+      "categorie": "Pizzas",
+      "photo": "https://picsum.photos/seed/pizza-coco/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "pizza-003",
+      "nom": "Pizza Vanille Canard",
+      "description": "Sauce vanille Bourbon, magret fumé, figues, chèvre frais",
+      "prix": 15.00,
+      "categorie": "Pizzas",
+      "photo": "https://picsum.photos/seed/pizza-canard/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "pizza-004",
+      "nom": "Pizza 4 fromages",
+      "description": "Mozzarella, emmental, chèvre, roquefort, basilic frais",
+      "prix": 13.00,
+      "categorie": "Pizzas",
+      "photo": "https://picsum.photos/seed/pizza-fromages/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "pizza-005",
+      "nom": "Calzone Carry",
+      "description": "Calzone farcie au carry poulet créole, sauce tomate épicée",
+      "prix": 13.50,
+      "categorie": "Pizzas",
+      "photo": "https://picsum.photos/seed/pizza-calzone/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "pizza-006",
+      "nom": "Salade fraîcheur",
+      "description": "Salade mixte, tomates cerises, avocat, vinaigrette passion",
+      "prix": 6.50,
+      "categorie": "Salades",
+      "photo": "https://picsum.photos/seed/pizza-salade/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "pizza-007",
+      "nom": "Tiramisu vanille",
+      "description": "Tiramisu maison à la vanille Bourbon de La Réunion",
+      "prix": 5.00,
+      "categorie": "Desserts",
+      "photo": "https://picsum.photos/seed/pizza-tiramisu/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "pizza-008",
+      "nom": "Boisson",
+      "description": "Eau, soda, bière locale Dodo ou jus de fruit",
+      "prix": 2.50,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/pizza-boisson/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    }
+  ],
+  "creneaux": {
+    "intervalle": 10,
+    "dureeService": 20,
+    "capaciteParLot": 12
+  },
+  "parametres": {
+    "conserverPlats": true,
+    "horaires": [
+      { "jour": "mer", "ouverture": "11h30", "fermeture": "14h00", "service": "midi" },
+      { "jour": "jeu", "ouverture": "11h30", "fermeture": "14h00", "service": "midi" },
+      { "jour": "ven", "ouverture": "11h30", "fermeture": "14h00", "service": "midi" },
+      { "jour": "ven", "ouverture": "18h30", "fermeture": "22h00", "service": "soir" },
+      { "jour": "sam", "ouverture": "11h30", "fermeture": "14h00", "service": "midi" },
+      { "jour": "sam", "ouverture": "18h30", "fermeture": "22h00", "service": "soir" },
+      { "jour": "dim", "ouverture": "18h30", "fermeture": "22h00", "service": "soir" }
+    ]
+  }
+}

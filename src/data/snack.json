@@ -1,0 +1,151 @@
+{
+  "plats": [
+    {
+      "id": "s1",
+      "nom": "Américain bouchon gratiné",
+      "description": "Baguette, bouchons vapeur, frites, fromage gratiné, sauces",
+      "prix": 4.5,
+      "categorie": "Sandwichs",
+      "photo": "https://picsum.photos/seed/s1-americain-bouchon/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s2",
+      "nom": "Américain merguez",
+      "description": "Baguette, merguez, frites, fromage gratiné, ketchup piment",
+      "prix": 4.0,
+      "categorie": "Sandwichs",
+      "photo": "https://picsum.photos/seed/s2-americain-merguez/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s3",
+      "nom": "Américain sarcives",
+      "description": "Baguette, porc caramélisé, frites, fromage gratiné",
+      "prix": 4.5,
+      "categorie": "Sandwichs",
+      "photo": "https://picsum.photos/seed/s3-americain-sarcives/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s4",
+      "nom": "Américain jambon",
+      "description": "Baguette, jambon, frites, fromage gratiné, mayo",
+      "prix": 3.5,
+      "categorie": "Sandwichs",
+      "photo": "https://picsum.photos/seed/s4-americain-jambon/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s5",
+      "nom": "Pain poulet frites gratiné",
+      "description": "Baguette, poulet mariné, frites, fromage gratiné",
+      "prix": 4.5,
+      "categorie": "Sandwichs",
+      "photo": "https://picsum.photos/seed/s5-pain-poulet/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s6",
+      "nom": "Bouchons x6",
+      "description": "Bouchées vapeur au porc, sauce soja piment",
+      "prix": 3.0,
+      "categorie": "Barquettes",
+      "photo": "https://picsum.photos/seed/s6-bouchons/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s7",
+      "nom": "Samoussas x3",
+      "description": "Samoussas frits au bœuf épicé",
+      "prix": 2.5,
+      "categorie": "Barquettes",
+      "photo": "https://picsum.photos/seed/s7-samoussas/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s8",
+      "nom": "Bonbons piment x5",
+      "description": "Beignets pimentés croustillants",
+      "prix": 2.0,
+      "categorie": "Barquettes",
+      "photo": "https://picsum.photos/seed/s8-bonbons-piment/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "s9",
+      "nom": "Piments farcis x3",
+      "description": "Piments farcis à la viande hachée épicée",
+      "prix": 2.5,
+      "categorie": "Barquettes",
+      "photo": "https://picsum.photos/seed/s9-piments-farcis/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "b3",
+      "nom": "COT citron",
+      "description": "Limonade réunionnaise au citron — 33cl",
+      "prix": 1.5,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/b3-cot-citron/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "b4",
+      "nom": "COT ananas",
+      "description": "Limonade réunionnaise à l'ananas — 33cl",
+      "prix": 1.5,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/b4-cot-ananas/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "b1",
+      "nom": "Dodo",
+      "description": "Bière locale de La Réunion — 33cl",
+      "prix": 2.0,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/b1-dodo/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "b10",
+      "nom": "Eau plate",
+      "description": "Eau minérale — 50cl",
+      "prix": 1.0,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/b10-eau/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    }
+  ],
+  "creneaux": {
+    "intervalle": 10,
+    "dureeService": 30,
+    "capaciteParLot": 10
+  },
+  "parametres": {
+    "conserverPlats": true,
+    "horaires": [
+      { "jour": "lun", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
+      { "jour": "mar", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
+      { "jour": "mer", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
+      { "jour": "jeu", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
+      { "jour": "ven", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
+      { "jour": "sam", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
+      { "jour": "dim", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" }
+    ]
+  }
+}

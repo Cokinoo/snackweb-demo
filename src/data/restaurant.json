@@ -1,0 +1,101 @@
+{
+  "plats": [
+    {
+      "id": "resto-001",
+      "nom": "Entrée du jour",
+      "description": "Assortiment d'achards, bouchons et rougail mangue",
+      "prix": 5.50,
+      "categorie": "Entrées",
+      "photo": "https://picsum.photos/seed/resto-entree/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "resto-002",
+      "nom": "Carry cabri massalé",
+      "description": "Cabri mariné au massalé, mijotage 3h, riz basmati et grains rouges",
+      "prix": 14.00,
+      "categorie": "Plats principaux",
+      "photo": "https://picsum.photos/seed/resto-cabri/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "resto-003",
+      "nom": "Carry canard à la vanille",
+      "description": "Magret de canard, sauce vanille Bourbon, riz parfumé",
+      "prix": 16.00,
+      "categorie": "Plats principaux",
+      "photo": "https://picsum.photos/seed/resto-canard/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "resto-004",
+      "nom": "Civet de porc",
+      "description": "Porc en civet vin rouge et épices créoles, riz blanc",
+      "prix": 13.00,
+      "categorie": "Plats principaux",
+      "photo": "https://picsum.photos/seed/resto-civet/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "resto-005",
+      "nom": "Cari crevettes coco",
+      "description": "Crevettes fraîches au lait de coco et citronnelle, riz jasmin",
+      "prix": 15.00,
+      "categorie": "Plats principaux",
+      "photo": "https://picsum.photos/seed/resto-crevettes/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "resto-006",
+      "nom": "Formule carry + dessert",
+      "description": "Plat carry au choix + gâteau patate ou napolitaine maison",
+      "prix": 17.00,
+      "categorie": "Formules",
+      "photo": "https://picsum.photos/seed/resto-formule/400/300",
+      "disponible": true,
+      "affichageSiRupture": "griser"
+    },
+    {
+      "id": "resto-007",
+      "nom": "Gâteau patate",
+      "description": "Dessert traditionnel réunionnais à la patate douce",
+      "prix": 4.00,
+      "categorie": "Desserts",
+      "photo": "https://picsum.photos/seed/resto-gateau/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    },
+    {
+      "id": "resto-008",
+      "nom": "Jus de fruit frais",
+      "description": "Letchi, corossol ou fruit de la passion selon saison",
+      "prix": 3.50,
+      "categorie": "Boissons",
+      "photo": "https://picsum.photos/seed/resto-jus/400/300",
+      "disponible": true,
+      "affichageSiRupture": "masquer"
+    }
+  ],
+  "creneaux": {
+    "intervalle": 15,
+    "dureeService": 60,
+    "capaciteParLot": 8
+  },
+  "parametres": {
+    "conserverPlats": true,
+    "horaires": [
+      { "jour": "mar", "ouverture": "12h00", "fermeture": "14h00", "service": "midi" },
+      { "jour": "mer", "ouverture": "12h00", "fermeture": "14h00", "service": "midi" },
+      { "jour": "jeu", "ouverture": "12h00", "fermeture": "14h00", "service": "midi" },
+      { "jour": "ven", "ouverture": "12h00", "fermeture": "14h00", "service": "midi" },
+      { "jour": "ven", "ouverture": "19h00", "fermeture": "21h30", "service": "soir" },
+      { "jour": "sam", "ouverture": "12h00", "fermeture": "14h30", "service": "midi" },
+      { "jour": "sam", "ouverture": "19h00", "fermeture": "21h30", "service": "soir" }
+    ]
+  }
+}
