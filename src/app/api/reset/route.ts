@@ -1,17 +1,13 @@
 import { NextResponse } from "next/server";
-import { getState, setState, initializeFromKV, persistAll } from "@/store/state";
+import { resetAll } from "@/store/state";
 import type { ApiResponse } from "@/types";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(): Promise<NextResponse<ApiResponse>> {
   try {
-    await initializeFromKV();
-    const state = getState();
-    const pause = !state.pause;
-    setState((s) => ({ ...s, pause }));
-    await persistAll();
-    return NextResponse.json({ success: true, data: { pause } });
+    await resetAll();
+    return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ success: false, error: "Erreur serveur" }, { status: 500 });
   }

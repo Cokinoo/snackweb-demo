@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getState, setState, getNextCommandeNumero } from "@/store/state";
-import type { ApiResponse, Commande, LigneCommande, TypeVitrine } from "@/types";
+import { getState, setState, getNextCommandeNumero, initializeFromKV, persistAll } from "@/store/state";
+import type { ApiResponse, Commande, LigneCommande, TypeVitrine, ModePaiement } from "@/types";
 
 export const dynamic = "force-dynamic";
 
@@ -9,14 +9,17 @@ interface CommandeInput {
   plats: LigneCommande[];
   creneau: string;
   whatsappPhone: string;
+  modePaiement: ModePaiement;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse>> {
   try {
-    const body = await req.json() as CommandeInput;
-    const { vitrine, plats, creneau, whatsappPhone } = body;
+    await initializeFromKV();
 
-    if (!vitrine || !plats || !creneau || !whatsappPhone) {
+    const body = await req.json() as CommandeInput;
+    const { vitrine, plats, creneau, whatsappPhone, modePaiement } = body;
+
+    if (!vitrine || !plats || !creneau || !whatsappPhone || !modePaiement) {
       return NextResponse.json({ success: false, error: "Données manquantes" }, { status: 400 });
     }
 
@@ -39,19 +42,27 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse>>
 
     const montant = plats.reduce((sum, l) => sum + l.prix * l.quantite, 0);
 
+    const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    const codeAntiFraude = "#" + Array.from({ length: 4 }, () =>
+      CHARS[Math.floor(Math.random() * CHARS.length)]
+    ).join("");
+
     const commande: Commande = {
       id: crypto.randomUUID(),
       numero: getNextCommandeNumero(),
+      codeAntiFraude,
       vitrine,
       plats,
       montant: Math.round(montant * 100) / 100,
       creneau,
-      statut: "nouvelle",
+      modePaiement,
+      statut: "en_cours",
       createdAt: new Date().toISOString(),
       whatsappPhone,
     };
 
     setState((s) => ({ ...s, commandes: [commande, ...s.commandes] }));
+    await persistAll();
 
     return NextResponse.json({ success: true, data: commande }, { status: 201 });
   } catch {

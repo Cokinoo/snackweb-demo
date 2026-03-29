@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getState, setState } from "@/store/state";
+import { getState, setState, initializeFromKV, persistAll } from "@/store/state";
 import type { ApiResponse, Plat, TypeVitrine } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +13,8 @@ export async function POST(
   { params }: { params: { type: string } }
 ): Promise<NextResponse<ApiResponse>> {
   try {
+    await initializeFromKV();
+
     const type = params.type as TypeVitrine;
 
     if (!VITRINES_VALIDES.includes(type)) {
@@ -42,6 +44,7 @@ export async function POST(
           },
         },
       }));
+      await persistAll();
       return NextResponse.json({ success: true, data: { id: platData.id, disponible } });
     }
 
@@ -62,6 +65,7 @@ export async function POST(
           },
         },
       }));
+      await persistAll();
       return NextResponse.json({ success: true, data: platData });
     }
 
@@ -79,6 +83,7 @@ export async function POST(
         },
       },
     }));
+    await persistAll();
     return NextResponse.json({ success: true, data: nouveauPlat }, { status: 201 });
   } catch {
     return NextResponse.json({ success: false, error: "Erreur serveur" }, { status: 500 });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getState, setState, addWhatsappMessage } from "@/store/state";
+import { getState, setState, addWhatsappMessage, initializeFromKV, persistAll } from "@/store/state";
 import type { ApiResponse, StatutCommande } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +16,8 @@ export async function POST(
   { params }: { params: { id: string } }
 ): Promise<NextResponse<ApiResponse>> {
   try {
+    await initializeFromKV();
+
     const { id } = params;
     const body = await req.json() as { statut: StatutCommande };
     const { statut } = body;
@@ -50,6 +52,8 @@ export async function POST(
         direction: "envoi",
       });
     }
+
+    await persistAll();
 
     return NextResponse.json({ success: true, data: { id, statut } });
   } catch {

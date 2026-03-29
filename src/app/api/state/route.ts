@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { getState, getWhatsappMessages } from "@/store/state";
+import { getState, getWhatsappMessages, initializeFromKV } from "@/store/state";
 import type { ApiResponse } from "@/types";
 
 export const dynamic = "force-dynamic";
 
-export function GET(): NextResponse<ApiResponse> {
+export async function GET(): Promise<NextResponse<ApiResponse>> {
   try {
+    await initializeFromKV();
     const state = getState();
     const whatsappMessages = getWhatsappMessages();
     return NextResponse.json({ success: true, data: { ...state, whatsappMessages } });

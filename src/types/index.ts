@@ -22,13 +22,17 @@ export interface LigneCommande {
   prix: number;
 }
 
+export type ModePaiement = "retrait" | "enligne";
+
 export interface Commande {
   id: string;
   numero: string;
+  codeAntiFraude: string;
   vitrine: TypeVitrine;
   plats: LigneCommande[];
   montant: number;
   creneau: string;
+  modePaiement: ModePaiement;
   statut: StatutCommande;
   createdAt: string;
   whatsappPhone: string;
@@ -72,6 +76,7 @@ export interface VitrineState {
 export interface MessageJour {
   texte: string;
   photo?: string;
+  prix: number;
   expireA: string;
 }
 

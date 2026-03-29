@@ -9,19 +9,11 @@ import BandeauMessageJour from "@/components/vitrine/BandeauMessageJour";
 import { isOuvert } from "@/lib/horaires";
 import type { State, Plat } from "@/types";
 
-const VERT = "#1D7A5F";
-const JAUNE = "#F5A623";
+const TERRACOTTA = "#C2410C";
 
-const PLATS_VEDETTES: string[] = ["s1", "s3", "s6", "s8"];
+const PLATS_VEDETTES: string[] = ["resto-002", "resto-005", "resto-006"];
 
-const CATEGORIES = [
-  { emoji: "🥖", label: "Sandwichs" },
-  { emoji: "🥟", label: "Barquettes" },
-  { emoji: "🌶️", label: "Pimentés" },
-  { emoji: "🥤", label: "Boissons" },
-];
-
-export default function SnackVitrinePage() {
+export default function RestaurantVitrinePage() {
   const state = usePolling<State>("/api/state");
   const heroCTARef = useRef<HTMLDivElement>(null);
   const [stickyVisible, setStickyVisible] = useState(false);
@@ -37,86 +29,73 @@ export default function SnackVitrinePage() {
     return () => observer.disconnect();
   }, []);
 
-  const horaires = state?.vitrines?.snack?.parametres?.horaires ?? [];
+  const horaires = state?.vitrines?.restaurant?.parametres?.horaires ?? [];
   const ouvert = state !== null && isOuvert(horaires) && !(state?.pause ?? false);
 
-  const plats: Plat[] = state?.vitrines?.snack?.plats ?? [];
+  const plats: Plat[] = state?.vitrines?.restaurant?.plats ?? [];
   const platsVedettes = PLATS_VEDETTES
     .map((id) => plats.find((p) => p.id === id))
     .filter((p): p is Plat => !!p);
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col max-w-[480px] mx-auto">
+    <div className="min-h-screen bg-stone-50 flex flex-col max-w-[480px] mx-auto">
 
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative h-[85vh] min-h-[520px] flex flex-col justify-end">
-
-        {/* Photo de fond */}
+      <section className="relative h-[55vh] min-h-[340px] flex flex-col justify-end">
         <Image
-          src="https://picsum.photos/seed/snack-hero-food/480/700"
-          alt="Chez Tatie Monique"
+          src="https://picsum.photos/seed/resto-hero-peï/480/600"
+          alt="Le Quotidien Péi"
           fill
           className="object-cover"
           priority
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-        {/* Overlay dégradé */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/10" />
-
-        {/* Bandeaux par-dessus overlay */}
         <div className="absolute top-0 left-0 right-0 z-10">
           <BandeauPause visible={state?.pause ?? false} />
         </div>
 
-        {/* Badge statut ouverture */}
         <div className="absolute top-4 right-4 z-10">
           <span
             className="text-xs font-bold px-3 py-1.5 rounded-full"
             style={{
-              backgroundColor: ouvert ? JAUNE : "#ef4444",
-              color: ouvert ? "#111" : "white",
+              backgroundColor: ouvert ? "#fff" : "#ef4444",
+              color: ouvert ? TERRACOTTA : "#fff",
             }}
           >
             {state === null ? "…" : ouvert ? "OUVERT" : "FERMÉ"}
           </span>
         </div>
 
-        {/* Contenu hero */}
-        <div className="relative z-10 px-5 pb-8">
-          {/* Badge catégorie */}
+        <div className="relative z-10 px-5 pb-7">
           <div
-            className="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 mb-4"
-            style={{ backgroundColor: JAUNE, color: "#111" }}
+            className="inline-block text-xs font-black uppercase tracking-widest px-3 py-1 mb-3"
+            style={{ backgroundColor: TERRACOTTA, color: "#fff" }}
           >
-            Snack Péi — Saint-Pierre
+            Restaurant Péi — Saint-Denis
           </div>
-
-          {/* Titre massif */}
-          <h1 className="text-4xl font-black text-white uppercase leading-none mb-2">
-            Chez<br />Tatie<br />Monique
+          <h1 className="text-3xl font-black text-white uppercase leading-tight mb-1">
+            Le Quotidien Péi
           </h1>
-
-          {/* Slogan */}
-          <p className="text-sm text-white/70 mb-6 font-medium">
-            Le snack péi qu'on aime depuis toujours
+          <p className="text-sm text-white/70 mb-5">
+            Cuisine créole du jour, barquettes à emporter
           </p>
 
-          {/* CTA principal */}
           <div ref={heroCTARef}>
             {state?.pause ? (
               <button
                 disabled
-                className="w-full py-4 text-sm font-black uppercase tracking-widest text-white bg-zinc-600 cursor-not-allowed"
+                className="w-full py-4 text-sm font-black uppercase tracking-widest text-white/50 bg-white/10 cursor-not-allowed"
               >
                 Commandes indisponibles
               </button>
             ) : (
               <Link
-                href="/menu/snack"
-                className="block w-full py-4 text-sm font-black uppercase tracking-widest text-center text-zinc-900"
-                style={{ backgroundColor: JAUNE }}
+                href="/menu/restaurant"
+                className="block w-full py-4 text-sm font-black uppercase tracking-widest text-center text-white"
+                style={{ backgroundColor: TERRACOTTA }}
               >
-                Commander maintenant
+                Voir le menu & commander
               </Link>
             )}
           </div>
@@ -126,42 +105,44 @@ export default function SnackVitrinePage() {
       {/* ── MESSAGE DU JOUR ──────────────────────────────────── */}
       <BandeauMessageJour message={state?.messageJour ?? null} />
 
-      {/* ── CATÉGORIES ───────────────────────────────────────── */}
-      <section className="bg-zinc-800 px-4 py-5">
-        <div className="grid grid-cols-4 gap-2">
-          {CATEGORIES.map(({ emoji, label }) => (
-            <div key={label} className="flex flex-col items-center gap-1.5">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                style={{ backgroundColor: "#1a1a1a" }}
-              >
-                {emoji}
-              </div>
-              <span className="text-xs text-zinc-400 font-medium text-center leading-tight">
-                {label}
-              </span>
-            </div>
-          ))}
+      {/* ── INFOS RAPIDES ────────────────────────────────────── */}
+      <section className="bg-white border-b border-stone-200 px-4 py-4">
+        <div className="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <p className="text-xl mb-1">🕐</p>
+            <p className="text-xs font-bold text-stone-700">Mar – Sam</p>
+            <p className="text-[11px] text-stone-400">12h – 14h</p>
+          </div>
+          <div>
+            <p className="text-xl mb-1">📦</p>
+            <p className="text-xs font-bold text-stone-700">À emporter</p>
+            <p className="text-[11px] text-stone-400">Barquettes</p>
+          </div>
+          <div>
+            <p className="text-xl mb-1">📱</p>
+            <p className="text-xs font-bold text-stone-700">Commande</p>
+            <p className="text-[11px] text-stone-400">En ligne</p>
+          </div>
         </div>
       </section>
 
       {/* ── SÉPARATEUR ───────────────────────────────────────── */}
       <div className="flex items-center px-5 py-5 gap-3">
-        <div className="flex-1 h-px bg-zinc-700" />
+        <div className="flex-1 h-px bg-stone-200" />
         <span
           className="text-xs font-black uppercase tracking-widest px-2"
-          style={{ color: JAUNE }}
+          style={{ color: TERRACOTTA }}
         >
           Nos spécialités
         </span>
-        <div className="flex-1 h-px bg-zinc-700" />
+        <div className="flex-1 h-px bg-stone-200" />
       </div>
 
       {/* ── PLATS VEDETTES ───────────────────────────────────── */}
       <section className="px-4 pb-4 space-y-3">
         {platsVedettes.length === 0
           ? Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-24 bg-zinc-800 rounded animate-pulse" />
+              <div key={i} className="h-24 bg-stone-200 rounded-xl animate-pulse" />
             ))
           : platsVedettes.map((plat) => (
               <PlatVedette key={plat.id} plat={plat} />
@@ -170,57 +151,55 @@ export default function SnackVitrinePage() {
 
       {/* ── HORAIRES ─────────────────────────────────────────── */}
       <section className="px-4 pb-4 mt-2">
-        <div
-          className="rounded overflow-hidden border"
-          style={{ borderColor: VERT + "60" }}
-        >
+        <div className="rounded-xl overflow-hidden border border-stone-200">
           <div
-            className="px-4 py-2.5 flex items-center gap-2"
-            style={{ backgroundColor: VERT }}
+            className="px-4 py-2.5"
+            style={{ backgroundColor: TERRACOTTA }}
           >
             <span className="text-sm font-black uppercase tracking-wider text-white">
               Horaires
             </span>
           </div>
-          <div className="bg-zinc-800 divide-y divide-zinc-700">
-            <HoraireLigne jour="Lun — Ven" heures="11h30 – 13h30" />
-            <HoraireLigne jour="Sam — Dim" heures="Fermé" ferme />
+          <div className="bg-white divide-y divide-stone-100">
+            <HoraireLigne jour="Mar – Jeu" heures="12h00 – 14h00" />
+            <HoraireLigne jour="Ven – Sam" heures="12h00 – 14h00  •  19h00 – 21h30" />
+            <HoraireLigne jour="Dim – Lun" heures="Fermé" ferme />
           </div>
         </div>
       </section>
 
-      {/* ── INFOS ────────────────────────────────────────────── */}
-      <section className="px-4 pb-8">
-        <div className="bg-zinc-800 rounded px-4 py-4 space-y-3">
+      {/* ── INFOS CONTACT ────────────────────────────────────── */}
+      <section className="px-4 pb-10">
+        <div className="bg-white rounded-xl border border-stone-200 px-4 py-4 space-y-3">
           <div className="flex items-center gap-3">
             <span className="text-base">📍</span>
-            <p className="text-sm text-zinc-300">Zone Artisanale, Saint-Pierre, La Réunion</p>
+            <p className="text-sm text-stone-600">12 rue de la Paix, Saint-Denis, La Réunion</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-base">📞</span>
-            <p className="text-sm text-zinc-300">0692 00 00 00</p>
+            <p className="text-sm text-stone-600">0262 00 00 00</p>
           </div>
         </div>
       </section>
 
       {/* ── CTA STICKY ───────────────────────────────────────── */}
       <div
-        className={`sticky bottom-0 px-4 py-3 bg-zinc-900 border-t border-zinc-700 transition-opacity duration-200 ${
+        className={`sticky bottom-0 px-4 py-3 bg-white border-t border-stone-200 transition-opacity duration-200 ${
           stickyVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
         {state?.pause ? (
           <button
             disabled
-            className="w-full py-4 text-sm font-black uppercase tracking-widest text-zinc-500 bg-zinc-800 cursor-not-allowed"
+            className="w-full py-4 text-sm font-black uppercase tracking-widest text-stone-400 bg-stone-100 cursor-not-allowed"
           >
             Commandes indisponibles
           </button>
         ) : (
           <Link
-            href="/menu/snack"
-            className="block w-full py-4 text-sm font-black uppercase tracking-widest text-center text-zinc-900"
-            style={{ backgroundColor: JAUNE }}
+            href="/menu/restaurant"
+            className="block w-full py-4 text-sm font-black uppercase tracking-widest text-center text-white"
+            style={{ backgroundColor: TERRACOTTA }}
           >
             Commander →
           </Link>
@@ -233,7 +212,7 @@ export default function SnackVitrinePage() {
 
 function PlatVedette({ plat }: { plat: Plat }) {
   return (
-    <div className="flex gap-0 bg-zinc-800 rounded overflow-hidden">
+    <div className="flex bg-white rounded-xl overflow-hidden border border-stone-200 shadow-sm">
       <div className="relative w-24 h-24 shrink-0">
         <Image
           src={plat.photo ?? `https://picsum.photos/seed/${plat.id}/96/96`}
@@ -244,12 +223,12 @@ function PlatVedette({ plat }: { plat: Plat }) {
       </div>
       <div className="flex-1 px-3 py-3 flex flex-col justify-between min-w-0">
         <div>
-          <p className="text-sm font-bold text-white leading-tight">{plat.nom}</p>
-          <p className="text-xs text-zinc-400 mt-1 line-clamp-2 leading-snug">
+          <p className="text-sm font-bold text-stone-800 leading-tight">{plat.nom}</p>
+          <p className="text-xs text-stone-400 mt-1 line-clamp-2 leading-snug">
             {plat.description}
           </p>
         </div>
-        <p className="text-sm font-black" style={{ color: "#F5A623" }}>
+        <p className="text-sm font-black" style={{ color: TERRACOTTA }}>
           {plat.prix.toFixed(2).replace(".", ",")} €
         </p>
       </div>
@@ -268,10 +247,8 @@ function HoraireLigne({
 }) {
   return (
     <div className="flex justify-between items-center px-4 py-3">
-      <span className="text-sm text-zinc-300">{jour}</span>
-      <span
-        className={`text-sm font-bold ${ferme ? "text-zinc-500 italic" : "text-white"}`}
-      >
+      <span className="text-sm text-stone-600">{jour}</span>
+      <span className={`text-sm font-bold ${ferme ? "text-stone-400 italic" : "text-stone-800"}`}>
         {heures}
       </span>
     </div>

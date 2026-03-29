@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { Switch } from "@/components/ui/switch";
 import { usePolling } from "@/hooks/usePolling";
 import CommandeCard from "@/components/dashboard/CommandeCard";
 import MenuPlatRow from "@/components/dashboard/MenuPlatRow";
@@ -11,7 +12,6 @@ type Onglet = "commandes" | "menu" | "reglages";
 type SousOnglet = StatutCommande;
 
 const SOUS_ONGLETS: { key: SousOnglet; label: string }[] = [
-  { key: "nouvelle",  label: "Nouvelles" },
   { key: "en_cours",  label: "En cours" },
   { key: "prete",     label: "Prêtes" },
   { key: "recuperee", label: "Récupérées" },
@@ -20,10 +20,12 @@ const SOUS_ONGLETS: { key: SousOnglet; label: string }[] = [
 export default function DashboardPage() {
   const state = usePolling<State>("/api/state");
   const [onglet, setOnglet] = useState<Onglet>("commandes");
-  const [sousOnglet, setSousOnglet] = useState<SousOnglet>("nouvelle");
+  const [sousOnglet, setSousOnglet] = useState<SousOnglet>("en_cours");
   const [loadingId, setLoadingId] = useState<string | null>(null);
+  const [loadingRelanceId, setLoadingRelanceId] = useState<string | null>(null);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
   const [messageTexte, setMessageTexte] = useState("");
+  const [messagePrix, setMessagePrix] = useState("");
   const [messageLoading, setMessageLoading] = useState(false);
 
   const commandes = state?.commandes ?? [];
@@ -42,6 +44,15 @@ export default function DashboardPage() {
     prete:     commandes.filter((c) => c.statut === "prete").length,
     recuperee: commandes.filter((c) => c.statut === "recuperee").length,
   }), [commandes]);
+
+  async function relancerCommande(id: string) {
+    setLoadingRelanceId(id);
+    try {
+      await fetch(`/api/commandes/${id}/relance`, { method: "POST" });
+    } finally {
+      setLoadingRelanceId(null);
+    }
+  }
 
   async function changerStatut(id: string, statut: StatutCommande) {
     setLoadingId(id);
@@ -75,15 +86,17 @@ export default function DashboardPage() {
   }
 
   async function publierMessage() {
-    if (!messageTexte.trim()) return;
+    const prix = parseFloat(messagePrix.replace(",", "."));
+    if (!messageTexte.trim() || isNaN(prix) || prix < 0) return;
     setMessageLoading(true);
     try {
       await fetch("/api/message-du-jour", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "publier", texte: messageTexte.trim() }),
+        body: JSON.stringify({ action: "publier", texte: messageTexte.trim(), prix }),
       });
       setMessageTexte("");
+      setMessagePrix("");
     } finally {
       setMessageLoading(false);
     }
@@ -148,7 +161,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-1">
           <div>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Dashboard</p>
-            <h1 className="text-base font-black text-white leading-tight">Chez Tatie Monique</h1>
+            <h1 className="text-base font-black text-white leading-tight">Mon restaurant</h1>
           </div>
           <div className="flex items-center gap-2">
             {/* Bouton +10 min */}
@@ -187,47 +200,48 @@ export default function DashboardPage() {
         )}
       </header>
 
+      {/* Sous-onglets statuts — dans le même bloc sticky que le header */}
+      {onglet === "commandes" && (
+        <div className="flex overflow-x-auto scrollbar-none border-b border-zinc-800 bg-zinc-900 sticky top-[72px] z-20">
+          {SOUS_ONGLETS.map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setSousOnglet(key)}
+              className={`shrink-0 px-4 py-3 text-xs font-bold uppercase tracking-wide transition-colors relative whitespace-nowrap ${
+                sousOnglet === key ? "text-[#F5A623]" : "text-zinc-500"
+              }`}
+            >
+              {label}
+              {badges[key] > 0 && (
+                <span
+                  className="ml-1.5 text-[10px] font-black px-1.5 py-0.5 rounded-full"
+                  style={{
+                    backgroundColor: sousOnglet === key ? "#F5A623" : "#3f3f46",
+                    color: sousOnglet === key ? "#111" : "#a1a1aa",
+                  }}
+                >
+                  {badges[key]}
+                </span>
+              )}
+              {sousOnglet === key && (
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F5A623]" />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* ── CONTENU ────────────────────────────────────────── */}
       <main className="flex-1 overflow-y-auto pb-20">
 
         {/* === ONGLET COMMANDES === */}
         {onglet === "commandes" && (
           <div>
-            {/* Sous-onglets statuts */}
-            <div className="flex overflow-x-auto scrollbar-none border-b border-zinc-800 bg-zinc-900 sticky top-[var(--header-h,72px)] z-20">
-              {SOUS_ONGLETS.map(({ key, label }) => (
-                <button
-                  key={key}
-                  onClick={() => setSousOnglet(key)}
-                  className={`shrink-0 px-4 py-3 text-xs font-bold uppercase tracking-wide transition-colors relative whitespace-nowrap ${
-                    sousOnglet === key ? "text-[#F5A623]" : "text-zinc-500"
-                  }`}
-                >
-                  {label}
-                  {badges[key] > 0 && (
-                    <span
-                      className="ml-1.5 text-[10px] font-black px-1.5 py-0.5 rounded-full"
-                      style={{
-                        backgroundColor: sousOnglet === key ? "#F5A623" : "#3f3f46",
-                        color: sousOnglet === key ? "#111" : "#a1a1aa",
-                      }}
-                    >
-                      {badges[key]}
-                    </span>
-                  )}
-                  {sousOnglet === key && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F5A623]" />
-                  )}
-                </button>
-              ))}
-            </div>
-
             {/* Liste commandes */}
             <div className="px-4 py-4 space-y-3">
               {commandesFiltrees.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-zinc-600 text-sm">Aucune commande {
-                    sousOnglet === "nouvelle" ? "nouvelle" :
                     sousOnglet === "en_cours" ? "en cours" :
                     sousOnglet === "prete" ? "prête" : "récupérée"
                   }</p>
@@ -238,7 +252,9 @@ export default function DashboardPage() {
                     key={commande.id}
                     commande={commande}
                     onStatutChange={changerStatut}
+                    onRelance={relancerCommande}
                     loading={loadingId === commande.id}
+                    loadingRelance={loadingRelanceId === commande.id}
                   />
                 ))
               )}
@@ -293,18 +309,12 @@ export default function DashboardPage() {
                         : "Les clients peuvent passer commande."}
                     </p>
                   </div>
-                  <button
-                    onClick={togglePause}
+                  <Switch
+                    checked={!pause}
+                    onCheckedChange={togglePause}
                     disabled={loadingAction === "pause"}
-                    className={`relative w-14 h-7 rounded-full transition-colors shrink-0 disabled:opacity-50 ${
-                      !pause ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  >
-                    <span
-                      className="absolute top-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform"
-                      style={{ transform: `translateX(${!pause ? "1.75rem" : "2px"})` }}
-                    />
-                  </button>
+                    className={!pause ? "bg-green-500" : "bg-red-500"}
+                  />
                 </div>
               </div>
             </section>
@@ -333,7 +343,10 @@ export default function DashboardPage() {
                 {messageJour ? (
                   <div className="px-4 py-4">
                     <p className="text-xs text-zinc-400 uppercase tracking-widest mb-2">Actif jusqu&apos;à minuit</p>
-                    <p className="text-sm text-white leading-relaxed mb-4">{messageJour.texte}</p>
+                    <p className="text-sm text-white leading-relaxed">{messageJour.texte}</p>
+                    <p className="text-sm font-black mt-1 mb-4" style={{ color: "#F5A623" }}>
+                      {messageJour.prix.toFixed(2).replace(".", ",")} €
+                    </p>
                     <button
                       onClick={supprimerMessage}
                       disabled={messageLoading}
@@ -345,25 +358,57 @@ export default function DashboardPage() {
                 ) : (
                   <div className="px-4 py-4 space-y-3">
                     <p className="text-xs text-zinc-400">
-                      Affiché en bandeau sur la vitrine jusqu&apos;à minuit.
+                      Affiché en bandeau sur la vitrine et commandable jusqu&apos;à minuit.
                     </p>
                     <textarea
                       value={messageTexte}
                       onChange={(e) => setMessageTexte(e.target.value)}
-                      placeholder="Ex : Aujourd'hui menu spécial cabri massalé !"
+                      placeholder="Ex : Menu spécial cabri massalé + riz + rougail"
                       rows={3}
                       className="w-full bg-zinc-700 rounded-lg px-3 py-3 text-sm text-white placeholder-zinc-500 outline-none resize-none"
                     />
+                    <div className="flex items-center gap-2 bg-zinc-700 rounded-lg px-3 py-3">
+                      <span className="text-sm text-zinc-400 shrink-0">Prix (€)</span>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        value={messagePrix}
+                        onChange={(e) => setMessagePrix(e.target.value)}
+                        placeholder="8,50"
+                        className="flex-1 bg-transparent text-white text-sm font-bold outline-none placeholder-zinc-500"
+                      />
+                    </div>
                     <button
                       onClick={publierMessage}
-                      disabled={messageLoading || !messageTexte.trim()}
+                      disabled={messageLoading || !messageTexte.trim() || !messagePrix}
                       className="w-full py-3 rounded-lg text-sm font-black text-zinc-900 uppercase tracking-wide disabled:opacity-50"
                       style={{ backgroundColor: "#F5A623" }}
                     >
-                      {messageLoading ? "Envoi…" : "Publier le message"}
+                      {messageLoading ? "Envoi…" : "Publier l'offre du jour"}
                     </button>
                   </div>
                 )}
+              </div>
+            </section>
+
+            {/* Reset démo */}
+            <section>
+              <SectionLabel>Démo</SectionLabel>
+              <div className="bg-zinc-800 rounded-xl px-4 py-4">
+                <p className="text-sm font-bold text-white mb-1">Réinitialiser la démo</p>
+                <p className="text-xs text-zinc-400 mb-3">
+                  Supprime toutes les commandes et messages WhatsApp.
+                </p>
+                <button
+                  onClick={async () => {
+                    if (!confirm("Réinitialiser toute la démo ?")) return;
+                    await fetch("/api/reset", { method: "POST" });
+                  }}
+                  className="w-full py-3 rounded-lg text-sm font-black text-white uppercase tracking-wide bg-red-700 hover:bg-red-600 transition-colors"
+                >
+                  Réinitialiser
+                </button>
               </div>
             </section>
 

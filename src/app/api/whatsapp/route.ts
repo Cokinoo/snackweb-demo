@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addWhatsappMessage } from "@/store/state";
+import { addWhatsappMessage, initializeFromKV, persistAll } from "@/store/state";
 import type { ApiResponse } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -13,6 +13,8 @@ interface MessageInput {
 
 export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse>> {
   try {
+    await initializeFromKV();
+
     const body = await req.json() as MessageInput;
     const { commandeId, telephone, texte, direction } = body;
 
@@ -21,6 +23,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse>>
     }
 
     addWhatsappMessage({ commandeId, telephone, texte, direction });
+    await persistAll();
 
     return NextResponse.json({ success: true });
   } catch {

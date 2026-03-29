@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getState } from "@/store/state";
+import { getState, initializeFromKV } from "@/store/state";
 import type { ApiResponse, TypeVitrine } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -18,11 +18,13 @@ function formatHeure(totalMinutes: number): string {
   return `${h}h${String(m).padStart(2, "0")}`;
 }
 
-export function GET(
+export async function GET(
   _req: NextRequest,
   { params }: { params: { type: string } }
-): NextResponse<ApiResponse> {
+): Promise<NextResponse<ApiResponse>> {
   try {
+    await initializeFromKV();
+
     const type = params.type as TypeVitrine;
 
     if (!VITRINES_VALIDES.includes(type)) {
@@ -49,13 +51,12 @@ export function GET(
     for (const horaire of horairesAujourdhui) {
       const debut = parseHeure(horaire.ouverture);
       let fin = parseHeure(horaire.fermeture);
-      // Gérer la fermeture après minuit (ex: "00h30" → 24h30)
       if (fin < debut) fin += 24 * 60;
       const debutEffectif = Math.max(debut, minutesActuelles + 10);
 
       for (let t = debut; t + dureeService <= fin; t += intervalle) {
         if (t < debutEffectif) continue;
-        if (t >= 24 * 60) continue; // ne pas afficher les créneaux après minuit
+        if (t >= 24 * 60) continue;
 
         const creneau = formatHeure(t);
         const commandesDansCreneau = state.commandes.filter(
@@ -76,7 +77,9 @@ export function GET(
       }
     }
 
-    const unique = [...new Set(creneauxDispos)].sort();
+    const unique = Array.from(new Set(creneauxDispos)).sort(
+      (a, b) => parseHeure(a) - parseHeure(b)
+    );
     return NextResponse.json({ success: true, data: { creneaux: unique } });
   } catch {
     return NextResponse.json({ success: false, error: "Erreur serveur" }, { status: 500 });

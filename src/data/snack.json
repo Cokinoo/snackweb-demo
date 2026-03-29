@@ -2,11 +2,11 @@
   "plats": [
     {
       "id": "s1",
-      "nom": "Américain bouchon gratiné",
-      "description": "Baguette, bouchons vapeur, frites, fromage gratiné, sauces",
+      "nom": "Pain bouchon gratiné",
+      "description": "Baguette, bouchons vapeur, fromage gratiné, sauces",
       "prix": 4.5,
       "categorie": "Sandwichs",
-      "photo": "https://picsum.photos/seed/s1-americain-bouchon/400/300",
+      "photo": "/images/pain-bouchon-gratine.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
@@ -139,13 +139,48 @@
   "parametres": {
     "conserverPlats": true,
     "horaires": [
-      { "jour": "lun", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
-      { "jour": "mar", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
-      { "jour": "mer", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
-      { "jour": "jeu", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
-      { "jour": "ven", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
-      { "jour": "sam", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" },
-      { "jour": "dim", "ouverture": "07h00", "fermeture": "00h00", "service": "midi" }
+      {
+        "jour": "lun",
+        "ouverture": "07h00",
+        "fermeture": "00h00",
+        "service": "midi"
+      },
+      {
+        "jour": "mar",
+        "ouverture": "07h00",
+        "fermeture": "00h00",
+        "service": "midi"
+      },
+      {
+        "jour": "mer",
+        "ouverture": "07h00",
+        "fermeture": "00h00",
+        "service": "midi"
+      },
+      {
+        "jour": "jeu",
+        "ouverture": "07h00",
+        "fermeture": "00h00",
+        "service": "midi"
+      },
+      {
+        "jour": "ven",
+        "ouverture": "07h00",
+        "fermeture": "00h00",
+        "service": "midi"
+      },
+      {
+        "jour": "sam",
+        "ouverture": "07h00",
+        "fermeture": "00h00",
+        "service": "midi"
+      },
+      {
+        "jour": "dim",
+        "ouverture": "16h00",
+        "fermeture": "21h30",
+        "service": "soir"
+      }
     ]
   }
 }

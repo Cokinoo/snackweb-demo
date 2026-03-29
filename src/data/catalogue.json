@@ -8,67 +8,438 @@
   },
 
   "snack": [
-    { "id": "s1", "categorie": "Sandwichs", "nom": "Américain bouchon gratiné", "description": "Baguette, bouchons vapeur, frites, fromage gratiné, sauces", "prix": 4.50, "photo": "americain-bouchon.jpg" },
-    { "id": "s2", "categorie": "Sandwichs", "nom": "Américain merguez", "description": "Baguette, merguez, frites, fromage gratiné, ketchup piment", "prix": 4.00, "photo": "americain-merguez.jpg" },
-    { "id": "s3", "categorie": "Sandwichs", "nom": "Américain sarcives", "description": "Baguette, porc caramélisé, frites, fromage gratiné", "prix": 4.50, "photo": "americain-sarcives.jpg" },
-    { "id": "s4", "categorie": "Sandwichs", "nom": "Américain jambon", "description": "Baguette, jambon, frites, fromage gratiné, mayo", "prix": 3.50, "photo": "americain-jambon.jpg" },
-    { "id": "s5", "categorie": "Sandwichs", "nom": "Pain poulet frites gratiné", "description": "Baguette, poulet mariné, frites, fromage gratiné", "prix": 4.50, "photo": "pain-poulet.jpg" },
-    { "id": "s6", "categorie": "Barquettes", "nom": "Bouchons x6", "description": "Bouchées vapeur au porc, sauce soja piment", "prix": 3.00, "photo": "bouchons.jpg" },
-    { "id": "s7", "categorie": "Barquettes", "nom": "Samoussas x3", "description": "Samoussas frits au bœuf épicé", "prix": 2.50, "photo": "samoussas.jpg" },
-    { "id": "s8", "categorie": "Barquettes", "nom": "Bonbons piment x5", "description": "Beignets pimentés croustillants", "prix": 2.00, "photo": "bonbons-piment.jpg" },
-    { "id": "s9", "categorie": "Barquettes", "nom": "Piments farcis x3", "description": "Piments farcis à la viande hachée épicée", "prix": 2.50, "photo": "piments-farcis.jpg" }
+    {
+      "id": "s1",
+      "categorie": "Sandwichs",
+      "nom": "Pain bouchon gratiné",
+      "description": "Baguette, bouchons vapeur, fromage gratiné, sauces",
+      "prix": 4.5,
+      "photo": "/images/pain-bouchon-gratine.png"
+    },
+    {
+      "id": "s2",
+      "categorie": "Sandwichs",
+      "nom": "Américain merguez",
+      "description": "Baguette, merguez, frites, fromage gratiné, ketchup piment",
+      "prix": 4.0,
+      "photo": "americain-merguez.jpg"
+    },
+    {
+      "id": "s3",
+      "categorie": "Sandwichs",
+      "nom": "Américain sarcives",
+      "description": "Baguette, porc caramélisé, frites, fromage gratiné",
+      "prix": 4.5,
+      "photo": "americain-sarcives.jpg"
+    },
+    {
+      "id": "s4",
+      "categorie": "Sandwichs",
+      "nom": "Américain jambon",
+      "description": "Baguette, jambon, frites, fromage gratiné, mayo",
+      "prix": 3.5,
+      "photo": "americain-jambon.jpg"
+    },
+    {
+      "id": "s5",
+      "categorie": "Sandwichs",
+      "nom": "Pain poulet frites gratiné",
+      "description": "Baguette, poulet mariné, frites, fromage gratiné",
+      "prix": 4.5,
+      "photo": "pain-poulet.jpg"
+    },
+    {
+      "id": "s6",
+      "categorie": "Barquettes",
+      "nom": "Bouchons x6",
+      "description": "Bouchées vapeur au porc, sauce soja piment",
+      "prix": 3.0,
+      "photo": "bouchons.jpg"
+    },
+    {
+      "id": "s7",
+      "categorie": "Barquettes",
+      "nom": "Samoussas x3",
+      "description": "Samoussas frits au bœuf épicé",
+      "prix": 2.5,
+      "photo": "samoussas.jpg"
+    },
+    {
+      "id": "s8",
+      "categorie": "Barquettes",
+      "nom": "Bonbons piment x5",
+      "description": "Beignets pimentés croustillants",
+      "prix": 2.0,
+      "photo": "bonbons-piment.jpg"
+    },
+    {
+      "id": "s9",
+      "categorie": "Barquettes",
+      "nom": "Piments farcis x3",
+      "description": "Piments farcis à la viande hachée épicée",
+      "prix": 2.5,
+      "photo": "piments-farcis.jpg"
+    }
   ],
 
   "restaurant_foodtruck": [
-    { "id": "r1", "categorie": "Entrées", "nom": "Salade de palmiste", "description": "Coeur de palmier frais, vinaigrette citron combava", "prix": 4.00, "photo": "salade-palmiste.jpg" },
-    { "id": "r2", "categorie": "Entrées", "nom": "Achards de légumes", "description": "Légumes mi-cuits marinés aux épices créoles", "prix": 3.50, "photo": "achards.jpg" },
-    { "id": "r3", "categorie": "Entrées", "nom": "Sauté de bœuf gros piment", "description": "Émincé de bœuf sauté aux gros piments et oignons", "prix": 4.50, "photo": "saute-boeuf-piment.jpg" },
-    { "id": "r4", "categorie": "Entrées", "nom": "Samoussas x3", "description": "Samoussas frits au bœuf épicé", "prix": 2.50, "photo": "samoussas.jpg" },
-    { "id": "r5", "categorie": "Plats", "nom": "Rougail saucisse", "description": "Saucisses fumées mijotées en rougail tomate, riz blanc, grains rouges", "prix": 10.00, "photo": "rougail-saucisse.jpg" },
-    { "id": "r6", "categorie": "Plats", "nom": "Carry poulet", "description": "Poulet mijoté aux épices créoles, riz blanc, rougail tomates", "prix": 11.00, "photo": "carry-poulet.jpg" },
-    { "id": "r7", "categorie": "Plats", "nom": "Cari requin", "description": "Requin mariné au curcuma et gingembre, riz blanc, brèdes", "prix": 12.00, "photo": "cari-requin.jpg" },
-    { "id": "r8", "categorie": "Plats", "nom": "Rougail morue", "description": "Morue dessalée en rougail tomate pimenté, riz blanc", "prix": 10.50, "photo": "rougail-morue.jpg" },
-    { "id": "r9", "categorie": "Plats", "nom": "Carry cabri", "description": "Cabri mijoté aux épices, riz blanc, grains lentilles", "prix": 13.00, "photo": "carry-cabri.jpg" },
-    { "id": "r10", "categorie": "Plats", "nom": "Rougail boucané", "description": "Porc fumé en rougail tomate, riz blanc, grains rouges", "prix": 11.50, "photo": "rougail-boucane.jpg" },
-    { "id": "r11", "categorie": "Plats", "nom": "Carry zourites", "description": "Pieuvre mijotée au lait de coco et épices, riz blanc", "prix": 13.50, "photo": "carry-zourites.jpg" },
-    { "id": "r12", "categorie": "Plats", "nom": "Burger bœuf créole", "description": "Steak haché, rougail tomate maison, salade, pain brioché", "prix": 6.50, "photo": "burger-boeuf.jpg" },
-    { "id": "r13", "categorie": "Plats", "nom": "Burger poulet massalé", "description": "Poulet massalé grillé, achard de légumes, pain brioché", "prix": 6.50, "photo": "burger-poulet.jpg" },
-    { "id": "r14", "categorie": "Plats", "nom": "Wrap sarcives", "description": "Porc caramélisé, salade, sauce soja, tortilla grillée", "prix": 5.50, "photo": "wrap-sarcives.jpg" },
-    { "id": "r15", "categorie": "Desserts", "nom": "Gâteau patate douce", "description": "Gâteau moelleux à la patate douce et vanille Bourbon", "prix": 3.00, "photo": "gateau-patate.jpg" },
-    { "id": "r16", "categorie": "Desserts", "nom": "Bonbon la rouroute", "description": "Beignets traditionnels à la fécule de marante", "prix": 2.50, "photo": "bonbon-rouroute.jpg" },
-    { "id": "r17", "categorie": "Desserts", "nom": "Fruit de saison", "description": "Ananas Victoria, mangue ou papaye selon arrivage", "prix": 2.00, "photo": "fruit-saison.jpg" },
-    { "id": "r18", "categorie": "Desserts", "nom": "Gâteau coco", "description": "Gâteau fondant à la noix de coco râpée", "prix": 3.00, "photo": "gateau-coco.jpg" }
+    {
+      "id": "r1",
+      "categorie": "Entrées",
+      "nom": "Salade de palmiste",
+      "description": "Coeur de palmier frais, vinaigrette citron combava",
+      "prix": 4.0,
+      "photo": "salade-palmiste.jpg"
+    },
+    {
+      "id": "r2",
+      "categorie": "Entrées",
+      "nom": "Achards de légumes",
+      "description": "Légumes mi-cuits marinés aux épices créoles",
+      "prix": 3.5,
+      "photo": "achards.jpg"
+    },
+    {
+      "id": "r3",
+      "categorie": "Entrées",
+      "nom": "Sauté de bœuf gros piment",
+      "description": "Émincé de bœuf sauté aux gros piments et oignons",
+      "prix": 4.5,
+      "photo": "saute-boeuf-piment.jpg"
+    },
+    {
+      "id": "r4",
+      "categorie": "Entrées",
+      "nom": "Samoussas x3",
+      "description": "Samoussas frits au bœuf épicé",
+      "prix": 2.5,
+      "photo": "samoussas.jpg"
+    },
+    {
+      "id": "r5",
+      "categorie": "Plats",
+      "nom": "Rougail saucisse",
+      "description": "Saucisses fumées mijotées en rougail tomate, riz blanc, grains rouges",
+      "prix": 10.0,
+      "photo": "rougail-saucisse.jpg"
+    },
+    {
+      "id": "r6",
+      "categorie": "Plats",
+      "nom": "Carry poulet",
+      "description": "Poulet mijoté aux épices créoles, riz blanc, rougail tomates",
+      "prix": 11.0,
+      "photo": "carry-poulet.jpg"
+    },
+    {
+      "id": "r7",
+      "categorie": "Plats",
+      "nom": "Cari requin",
+      "description": "Requin mariné au curcuma et gingembre, riz blanc, brèdes",
+      "prix": 12.0,
+      "photo": "cari-requin.jpg"
+    },
+    {
+      "id": "r8",
+      "categorie": "Plats",
+      "nom": "Rougail morue",
+      "description": "Morue dessalée en rougail tomate pimenté, riz blanc",
+      "prix": 10.5,
+      "photo": "rougail-morue.jpg"
+    },
+    {
+      "id": "r9",
+      "categorie": "Plats",
+      "nom": "Carry cabri",
+      "description": "Cabri mijoté aux épices, riz blanc, grains lentilles",
+      "prix": 13.0,
+      "photo": "carry-cabri.jpg"
+    },
+    {
+      "id": "r10",
+      "categorie": "Plats",
+      "nom": "Rougail boucané",
+      "description": "Porc fumé en rougail tomate, riz blanc, grains rouges",
+      "prix": 11.5,
+      "photo": "rougail-boucane.jpg"
+    },
+    {
+      "id": "r11",
+      "categorie": "Plats",
+      "nom": "Carry zourites",
+      "description": "Pieuvre mijotée au lait de coco et épices, riz blanc",
+      "prix": 13.5,
+      "photo": "carry-zourites.jpg"
+    },
+    {
+      "id": "r12",
+      "categorie": "Plats",
+      "nom": "Burger bœuf créole",
+      "description": "Steak haché, rougail tomate maison, salade, pain brioché",
+      "prix": 6.5,
+      "photo": "burger-boeuf.jpg"
+    },
+    {
+      "id": "r13",
+      "categorie": "Plats",
+      "nom": "Burger poulet massalé",
+      "description": "Poulet massalé grillé, achard de légumes, pain brioché",
+      "prix": 6.5,
+      "photo": "burger-poulet.jpg"
+    },
+    {
+      "id": "r14",
+      "categorie": "Plats",
+      "nom": "Wrap sarcives",
+      "description": "Porc caramélisé, salade, sauce soja, tortilla grillée",
+      "prix": 5.5,
+      "photo": "wrap-sarcives.jpg"
+    },
+    {
+      "id": "r15",
+      "categorie": "Desserts",
+      "nom": "Gâteau patate douce",
+      "description": "Gâteau moelleux à la patate douce et vanille Bourbon",
+      "prix": 3.0,
+      "photo": "gateau-patate.jpg"
+    },
+    {
+      "id": "r16",
+      "categorie": "Desserts",
+      "nom": "Bonbon la rouroute",
+      "description": "Beignets traditionnels à la fécule de marante",
+      "prix": 2.5,
+      "photo": "bonbon-rouroute.jpg"
+    },
+    {
+      "id": "r17",
+      "categorie": "Desserts",
+      "nom": "Fruit de saison",
+      "description": "Ananas Victoria, mangue ou papaye selon arrivage",
+      "prix": 2.0,
+      "photo": "fruit-saison.jpg"
+    },
+    {
+      "id": "r18",
+      "categorie": "Desserts",
+      "nom": "Gâteau coco",
+      "description": "Gâteau fondant à la noix de coco râpée",
+      "prix": 3.0,
+      "photo": "gateau-coco.jpg"
+    }
   ],
 
   "pizza": [
-    { "id": "p1", "categorie": "Pizzas classiques", "nom": "Margherita", "description": "Sauce tomate, mozzarella, basilic frais", "prix": 9.00, "photo": "margherita.jpg" },
-    { "id": "p2", "categorie": "Pizzas classiques", "nom": "Reine", "description": "Sauce tomate, mozzarella, jambon, champignons", "prix": 10.50, "photo": "reine.jpg" },
-    { "id": "p3", "categorie": "Pizzas classiques", "nom": "4 fromages", "description": "Sauce tomate, mozzarella, chèvre, emmental, roquefort", "prix": 11.00, "photo": "4-fromages.jpg" },
-    { "id": "p4", "categorie": "Pizzas classiques", "nom": "Calzone", "description": "Pizza fermée, jambon, mozzarella, champignons, oeuf", "prix": 11.50, "photo": "calzone.jpg" },
-    { "id": "p5", "categorie": "Pizzas classiques", "nom": "Orientale", "description": "Sauce tomate, mozzarella, merguez, poivrons, oignons", "prix": 11.00, "photo": "orientale.jpg" },
-    { "id": "p6", "categorie": "Pizzas créoles", "nom": "Pizza rougail saucisse", "description": "Sauce rougail tomate, mozzarella, saucisses fumées, piment", "prix": 12.00, "photo": "pizza-rougail.jpg" },
-    { "id": "p7", "categorie": "Pizzas créoles", "nom": "Pizza poulet massalé", "description": "Sauce tomate, mozzarella, poulet massalé, oignons confits", "prix": 12.00, "photo": "pizza-massale.jpg" },
-    { "id": "p8", "categorie": "Pizzas créoles", "nom": "Pizza boucané ananas", "description": "Sauce tomate, mozzarella, porc boucané fumé, ananas Victoria", "prix": 12.50, "photo": "pizza-boucane.jpg" },
-    { "id": "p9", "categorie": "Pizzas créoles", "nom": "Pizza zourites", "description": "Sauce tomate, mozzarella, pieuvre mijotée, poivrons", "prix": 13.00, "photo": "pizza-zourites.jpg" },
-    { "id": "p10", "categorie": "Accompagnements", "nom": "Salade verte", "description": "Salade mixte, tomates, vinaigrette maison", "prix": 3.00, "photo": "salade.jpg" },
-    { "id": "p11", "categorie": "Accompagnements", "nom": "Frites", "description": "Frites maison croustillantes", "prix": 3.50, "photo": "frites.jpg" },
-    { "id": "p12", "categorie": "Accompagnements", "nom": "Pain à l'ail", "description": "Baguette grillée au beurre d'ail et persil", "prix": 2.50, "photo": "pain-ail.jpg" }
+    {
+      "id": "p1",
+      "categorie": "Pizzas classiques",
+      "nom": "Margherita",
+      "description": "Sauce tomate, mozzarella, basilic frais",
+      "prix": 9.0,
+      "photo": "margherita.jpg"
+    },
+    {
+      "id": "p2",
+      "categorie": "Pizzas classiques",
+      "nom": "Reine",
+      "description": "Sauce tomate, mozzarella, jambon, champignons",
+      "prix": 10.5,
+      "photo": "reine.jpg"
+    },
+    {
+      "id": "p3",
+      "categorie": "Pizzas classiques",
+      "nom": "4 fromages",
+      "description": "Sauce tomate, mozzarella, chèvre, emmental, roquefort",
+      "prix": 11.0,
+      "photo": "4-fromages.jpg"
+    },
+    {
+      "id": "p4",
+      "categorie": "Pizzas classiques",
+      "nom": "Calzone",
+      "description": "Pizza fermée, jambon, mozzarella, champignons, oeuf",
+      "prix": 11.5,
+      "photo": "calzone.jpg"
+    },
+    {
+      "id": "p5",
+      "categorie": "Pizzas classiques",
+      "nom": "Orientale",
+      "description": "Sauce tomate, mozzarella, merguez, poivrons, oignons",
+      "prix": 11.0,
+      "photo": "orientale.jpg"
+    },
+    {
+      "id": "p6",
+      "categorie": "Pizzas créoles",
+      "nom": "Pizza rougail saucisse",
+      "description": "Sauce rougail tomate, mozzarella, saucisses fumées, piment",
+      "prix": 12.0,
+      "photo": "pizza-rougail.jpg"
+    },
+    {
+      "id": "p7",
+      "categorie": "Pizzas créoles",
+      "nom": "Pizza poulet massalé",
+      "description": "Sauce tomate, mozzarella, poulet massalé, oignons confits",
+      "prix": 12.0,
+      "photo": "pizza-massale.jpg"
+    },
+    {
+      "id": "p8",
+      "categorie": "Pizzas créoles",
+      "nom": "Pizza boucané ananas",
+      "description": "Sauce tomate, mozzarella, porc boucané fumé, ananas Victoria",
+      "prix": 12.5,
+      "photo": "pizza-boucane.jpg"
+    },
+    {
+      "id": "p9",
+      "categorie": "Pizzas créoles",
+      "nom": "Pizza zourites",
+      "description": "Sauce tomate, mozzarella, pieuvre mijotée, poivrons",
+      "prix": 13.0,
+      "photo": "pizza-zourites.jpg"
+    },
+    {
+      "id": "p10",
+      "categorie": "Accompagnements",
+      "nom": "Salade verte",
+      "description": "Salade mixte, tomates, vinaigrette maison",
+      "prix": 3.0,
+      "photo": "salade.jpg"
+    },
+    {
+      "id": "p11",
+      "categorie": "Accompagnements",
+      "nom": "Frites",
+      "description": "Frites maison croustillantes",
+      "prix": 3.5,
+      "photo": "frites.jpg"
+    },
+    {
+      "id": "p12",
+      "categorie": "Accompagnements",
+      "nom": "Pain à l'ail",
+      "description": "Baguette grillée au beurre d'ail et persil",
+      "prix": 2.5,
+      "photo": "pain-ail.jpg"
+    }
   ],
 
   "boissons": [
-    { "id": "b1", "categorie": "Bières", "nom": "Dodo", "description": "Bière locale de La Réunion — 33cl", "prix": 2.00, "photo": "dodo.jpg" },
-    { "id": "b2", "categorie": "Bières", "nom": "Dodo — Grande", "description": "Bière locale de La Réunion — 50cl", "prix": 3.00, "photo": "dodo-grande.jpg" },
-    { "id": "b3", "categorie": "Sodas", "nom": "COT citron", "description": "Limonade réunionnaise au citron — 33cl", "prix": 1.50, "photo": "cot-citron.jpg" },
-    { "id": "b4", "categorie": "Sodas", "nom": "COT ananas", "description": "Limonade réunionnaise à l'ananas — 33cl", "prix": 1.50, "photo": "cot-ananas.jpg" },
-    { "id": "b5", "categorie": "Sodas", "nom": "Coca-Cola", "description": "Coca-Cola — 33cl", "prix": 2.00, "photo": "coca.jpg" },
-    { "id": "b6", "categorie": "Sodas", "nom": "Coca-Cola Zero", "description": "Coca-Cola Zero — 33cl", "prix": 2.00, "photo": "coca-zero.jpg" },
-    { "id": "b7", "categorie": "Sodas", "nom": "Fanta orange", "description": "Fanta orange — 33cl", "prix": 2.00, "photo": "fanta.jpg" },
-    { "id": "b8", "categorie": "Sodas", "nom": "Ti'Solpak", "description": "Jus de fruit réunionnais en berlingot — 20cl", "prix": 1.50, "photo": "tisolpak.jpg" },
-    { "id": "b9", "categorie": "Jus & Eau", "nom": "Jus de fruit frais", "description": "Ananas Victoria ou fruit de la passion selon arrivage", "prix": 3.00, "photo": "jus-frais.jpg" },
-    { "id": "b10", "categorie": "Jus & Eau", "nom": "Eau plate", "description": "Eau minérale — 50cl", "prix": 1.00, "photo": "eau.jpg" },
-    { "id": "b11", "categorie": "Jus & Eau", "nom": "Eau gazeuse", "description": "Eau gazeuse — 50cl", "prix": 1.50, "photo": "eau-gazeuse.jpg" },
-    { "id": "b12", "categorie": "Chaud", "nom": "Café", "description": "Café expresso", "prix": 1.50, "photo": "cafe.jpg" },
-    { "id": "b13", "categorie": "Chaud", "nom": "Thé caf", "description": "Thé au lait concentré sucré — spécialité réunionnaise", "prix": 1.50, "photo": "the-caf.jpg" },
-    { "id": "b14", "categorie": "Chaud", "nom": "Chocolat chaud", "description": "Chocolat chaud maison", "prix": 2.00, "photo": "chocolat.jpg" }
+    {
+      "id": "b1",
+      "categorie": "Bières",
+      "nom": "Dodo",
+      "description": "Bière locale de La Réunion — 33cl",
+      "prix": 2.0,
+      "photo": "dodo.jpg"
+    },
+    {
+      "id": "b2",
+      "categorie": "Bières",
+      "nom": "Dodo — Grande",
+      "description": "Bière locale de La Réunion — 50cl",
+      "prix": 3.0,
+      "photo": "dodo-grande.jpg"
+    },
+    {
+      "id": "b3",
+      "categorie": "Sodas",
+      "nom": "COT citron",
+      "description": "Limonade réunionnaise au citron — 33cl",
+      "prix": 1.5,
+      "photo": "cot-citron.jpg"
+    },
+    {
+      "id": "b4",
+      "categorie": "Sodas",
+      "nom": "COT ananas",
+      "description": "Limonade réunionnaise à l'ananas — 33cl",
+      "prix": 1.5,
+      "photo": "cot-ananas.jpg"
+    },
+    {
+      "id": "b5",
+      "categorie": "Sodas",
+      "nom": "Coca-Cola",
+      "description": "Coca-Cola — 33cl",
+      "prix": 2.0,
+      "photo": "coca.jpg"
+    },
+    {
+      "id": "b6",
+      "categorie": "Sodas",
+      "nom": "Coca-Cola Zero",
+      "description": "Coca-Cola Zero — 33cl",
+      "prix": 2.0,
+      "photo": "coca-zero.jpg"
+    },
+    {
+      "id": "b7",
+      "categorie": "Sodas",
+      "nom": "Fanta orange",
+      "description": "Fanta orange — 33cl",
+      "prix": 2.0,
+      "photo": "fanta.jpg"
+    },
+    {
+      "id": "b8",
+      "categorie": "Sodas",
+      "nom": "Ti'Solpak",
+      "description": "Jus de fruit réunionnais en berlingot — 20cl",
+      "prix": 1.5,
+      "photo": "tisolpak.jpg"
+    },
+    {
+      "id": "b9",
+      "categorie": "Jus & Eau",
+      "nom": "Jus de fruit frais",
+      "description": "Ananas Victoria ou fruit de la passion selon arrivage",
+      "prix": 3.0,
+      "photo": "jus-frais.jpg"
+    },
+    {
+      "id": "b10",
+      "categorie": "Jus & Eau",
+      "nom": "Eau plate",
+      "description": "Eau minérale — 50cl",
+      "prix": 1.0,
+      "photo": "eau.jpg"
+    },
+    {
+      "id": "b11",
+      "categorie": "Jus & Eau",
+      "nom": "Eau gazeuse",
+      "description": "Eau gazeuse — 50cl",
+      "prix": 1.5,
+      "photo": "eau-gazeuse.jpg"
+    },
+    {
+      "id": "b12",
+      "categorie": "Chaud",
+      "nom": "Café",
+      "description": "Café expresso",
+      "prix": 1.5,
+      "photo": "cafe.jpg"
+    },
+    {
+      "id": "b13",
+      "categorie": "Chaud",
+      "nom": "Thé caf",
+      "description": "Thé au lait concentré sucré — spécialité réunionnaise",
+      "prix": 1.5,
+      "photo": "the-caf.jpg"
+    },
+    {
+      "id": "b14",
+      "categorie": "Chaud",
+      "nom": "Chocolat chaud",
+      "description": "Chocolat chaud maison",
+      "prix": 2.0,
+      "photo": "chocolat.jpg"
+    }
   ]
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getState, setState, addWhatsappMessage } from "@/store/state";
+import { getState, setState, addWhatsappMessage, initializeFromKV, persistAll } from "@/store/state";
 import type { ApiResponse } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -13,8 +13,10 @@ function ajouterMinutes(creneau: string, minutes: number): string {
   return `${h}h${String(m).padStart(2, "0")}`;
 }
 
-export function POST(): NextResponse<ApiResponse> {
+export async function POST(): Promise<NextResponse<ApiResponse>> {
   try {
+    await initializeFromKV();
+
     const state = getState();
     const commandesConcernees = state.commandes.filter(
       (c) => c.statut === "nouvelle" || c.statut === "en_cours"
@@ -39,6 +41,8 @@ export function POST(): NextResponse<ApiResponse> {
         direction: "envoi",
       });
     }
+
+    await persistAll();
 
     return NextResponse.json({
       success: true,

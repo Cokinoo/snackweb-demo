@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePolling } from "@/hooks/usePolling";
 import type { WhatsAppMessage } from "@/types";
+import type { PendingOrder } from "@/app/menu/snack/page";
 
 interface StateWithMessages {
   whatsappMessages: WhatsAppMessage[];
@@ -23,46 +24,140 @@ function formatTelephone(tel: string): string {
 
 function WhatsappChat() {
   const searchParams = useSearchParams();
-  const texteParam = searchParams.get("texte") ?? "";
-  const commandeIdParam = searchParams.get("commandeId") ?? "";
   const telephoneParam = searchParams.get("telephone") ?? "";
+  const creneauParam = searchParams.get("creneau") ?? "";
 
   const state = usePolling<StateWithMessages>("/api/state");
   const messages = state?.whatsappMessages ?? [];
 
-  const [inputValue, setInputValue] = useState(texteParam);
+  const [inputValue, setInputValue] = useState("Bonjour OK");
   const [sending, setSending] = useState(false);
+  const [erreur, setErreur] = useState("");
+  const [confirmation, setConfirmation] = useState<{ numero: string; creneau: string } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Pré-remplir l'input si on arrive depuis le checkout
+  useEffect(() => {
+    if (telephoneParam) {
+      setInputValue("Bonjour OK");
+    }
+  }, [telephoneParam]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
-  // Pré-remplir l'input si les params changent (arrivée depuis la page succès)
-  useEffect(() => {
-    if (texteParam) setInputValue(texteParam);
-  }, [texteParam]);
-
   async function envoyerMessage() {
     const texte = inputValue.trim();
     if (!texte || sending) return;
 
+    setErreur("");
     setSending(true);
     try {
-      await fetch("/api/whatsapp", {
+      const pendingRaw = sessionStorage.getItem("pendingOrder");
+      const pending: PendingOrder | null = pendingRaw ? JSON.parse(pendingRaw) as PendingOrder : null;
+
+      let commandeId = "direct";
+      let telephone = telephoneParam || "0692000000";
+      let messageTexte = texte;
+
+      if (pending) {
+        const lignes = pending.plats.map((l) => ({
+          platId: l.platId,
+          nom: l.nom,
+          quantite: l.quantite,
+          prix: l.prix,
+        }));
+
+        const resCommande = await fetch("/api/commandes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            vitrine: pending.vitrine,
+            plats: lignes,
+            creneau: pending.creneau,
+            whatsappPhone: pending.telephone,
+            modePaiement: pending.modePaiement,
+          }),
+        });
+
+        const jsonCommande = await resCommande.json() as {
+          success: boolean;
+          data: { id: string; numero: string; creneau: string; codeAntiFraude: string };
+          error?: string;
+        };
+
+        if (!jsonCommande.success) {
+          setErreur(`Erreur création commande : ${jsonCommande.error ?? "inconnue"}`);
+          return;
+        }
+
+        commandeId = jsonCommande.data.id;
+        telephone = pending.telephone;
+        messageTexte = `Bonjour, ${jsonCommande.data.numero} OK`;
+        setConfirmation({ numero: jsonCommande.data.numero, creneau: pending.creneau });
+
+        // Ticket de confirmation automatique avec délai (effet réponse restaurant)
+        const commande = jsonCommande.data;
+        const lignesTexte = pending.plats
+          .map((l) => `  × ${l.quantite} ${l.nom} — ${(l.prix * l.quantite).toFixed(2).replace(".", ",")} €`)
+          .join("\n");
+        const ticketTexte = [
+          `✅ Commande ${commande.numero} confirmée !`,
+          ``,
+          `📋 Récapitulatif :`,
+          lignesTexte,
+          ``,
+          `💰 Total : ${pending.total.toFixed(2).replace(".", ",")} €`,
+          `💳 Paiement : ${pending.modePaiement === "enligne" ? "En ligne" : "Au retrait"}`,
+          `🕐 Retrait : ${pending.creneau}`,
+          `📍 Chez Tatie Monique`,
+          ``,
+          `🔐 Code de retrait :`,
+          `${commande.codeAntiFraude}`,
+          ``,
+          `Présentez ce code au comptoir. 🍽️`,
+        ].join("\n");
+
+        setTimeout(() => {
+          fetch("/api/whatsapp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              commandeId: commande.id,
+              telephone,
+              texte: ticketTexte,
+              direction: "envoi",
+            }),
+          });
+        }, 1500);
+
+        sessionStorage.removeItem("pendingOrder");
+      }
+
+      // Message client
+      const resWa = await fetch("/api/whatsapp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          commandeId: commandeIdParam || "direct",
-          telephone: telephoneParam || "0692000000",
-          texte,
+          commandeId,
+          telephone,
+          texte: messageTexte,
           direction: "reception",
         }),
       });
+
+      const jsonWa = await resWa.json() as { success: boolean; error?: string };
+      if (!jsonWa.success) {
+        setErreur(`Erreur message WhatsApp : ${jsonWa.error ?? "inconnue"}`);
+        return;
+      }
+
       setInputValue("");
-      // Nettoyer l'URL sans recharger la page
       window.history.replaceState({}, "", "/whatsapp");
+    } catch (e) {
+      setErreur(`Erreur réseau : ${e instanceof Error ? e.message : "inconnue"}`);
     } finally {
       setSending(false);
       setTimeout(() => inputRef.current?.focus(), 100);
@@ -102,7 +197,27 @@ function WhatsappChat() {
           </span>
         </div>
 
-        {messages.length === 0 && !texteParam && (
+        {/* Bandeau de confirmation commande */}
+        {confirmation && (
+          <div style={styles.confirmBanner}>
+            <span style={{ fontSize: 18 }}>✅</span>
+            <div>
+              <p style={styles.confirmTitle}>Commande {confirmation.numero} confirmée !</p>
+              <p style={styles.confirmSub}>Retrait à {confirmation.creneau}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Contexte commande avant envoi */}
+        {!confirmation && telephoneParam && messages.length === 0 && (
+          <div style={styles.pendingBanner}>
+            <p style={styles.pendingText}>
+              📋 Commande pour {creneauParam} — envoyez le message pour confirmer
+            </p>
+          </div>
+        )}
+
+        {messages.length === 0 && !telephoneParam && (
           <div style={styles.emptyState}>
             <div style={styles.emptyIcon}>💬</div>
             <p style={styles.emptyText}>Aucun message pour le moment.</p>
@@ -118,6 +233,13 @@ function WhatsappChat() {
 
         <div ref={bottomRef} />
       </div>
+
+      {/* Erreur */}
+      {erreur && (
+        <div style={{ backgroundColor: "#fee2e2", padding: "8px 12px", flexShrink: 0, borderTop: "1px solid #fca5a5" }}>
+          <p style={{ fontSize: 12, color: "#991b1b", margin: 0 }}>⚠️ {erreur}</p>
+        </div>
+      )}
 
       {/* Barre de saisie */}
       <div style={styles.inputBar}>
@@ -137,7 +259,7 @@ function WhatsappChat() {
           disabled={!inputValue.trim() || sending}
           style={{
             ...styles.sendBtn,
-            backgroundColor: inputValue.trim() ? "#25D366" : "#8e8e8e",
+            backgroundColor: inputValue.trim() && !sending ? "#25D366" : "#8e8e8e",
           }}
           aria-label="Envoyer"
         >
@@ -200,20 +322,11 @@ const styles: Record<string, React.CSSProperties> = {
     paddingTop: "env(safe-area-inset-top, 10px)",
     flexShrink: 0,
   },
-  headerLeft: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-  },
+  headerLeft: { display: "flex", alignItems: "center", gap: 10 },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
+    width: 40, height: 40, borderRadius: "50%",
     backgroundColor: "#128C7E",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexShrink: 0,
+    display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
   },
   headerName: { color: "white", fontSize: 16, fontWeight: 600, lineHeight: 1.2 },
   headerSub: { color: "rgba(255,255,255,0.7)", fontSize: 12 },
@@ -221,32 +334,35 @@ const styles: Record<string, React.CSSProperties> = {
   iconBtn: { fontSize: 20, cursor: "pointer" },
 
   chatBody: {
-    flex: 1,
-    overflowY: "auto",
+    flex: 1, overflowY: "auto",
     padding: "12px 8px",
-    display: "flex",
-    flexDirection: "column",
-    gap: 6,
+    display: "flex", flexDirection: "column", gap: 6,
   },
   infoBubble: {
-    backgroundColor: "#FFF9C4",
-    borderRadius: 8,
-    padding: "6px 12px",
-    textAlign: "center",
-    alignSelf: "center",
-    maxWidth: 280,
-    marginBottom: 4,
+    backgroundColor: "#FFF9C4", borderRadius: 8,
+    padding: "6px 12px", textAlign: "center",
+    alignSelf: "center", maxWidth: 280, marginBottom: 4,
   },
   infoText: { fontSize: 12, color: "#666", lineHeight: 1.4 },
 
+  confirmBanner: {
+    backgroundColor: "#dcfce7", borderRadius: 12,
+    padding: "10px 14px", display: "flex", gap: 10, alignItems: "center",
+    alignSelf: "center", maxWidth: 300,
+  },
+  confirmTitle: { fontSize: 14, fontWeight: 700, color: "#166534", margin: 0 },
+  confirmSub: { fontSize: 12, color: "#15803d", margin: 0 },
+
+  pendingBanner: {
+    backgroundColor: "#FFF9C4", borderRadius: 8,
+    padding: "8px 12px", alignSelf: "center", maxWidth: 300,
+  },
+  pendingText: { fontSize: 12, color: "#78716c", margin: 0, textAlign: "center" },
+
   emptyState: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    flex: 1,
-    padding: 32,
-    textAlign: "center",
-    marginTop: 40,
+    display: "flex", flexDirection: "column",
+    alignItems: "center", flex: 1,
+    padding: 32, textAlign: "center", marginTop: 40,
   },
   emptyIcon: { fontSize: 48, marginBottom: 16, opacity: 0.4 },
   emptyText: { fontSize: 16, color: "#555", fontWeight: 600, margin: "0 0 8px" },
@@ -257,84 +373,55 @@ const styles: Record<string, React.CSSProperties> = {
   bubbleReception: {
     backgroundColor: "white",
     borderRadius: "0px 12px 12px 12px",
-    padding: "6px 10px 4px",
-    maxWidth: "80%",
-    position: "relative",
-    boxShadow: "0 1px 1px rgba(0,0,0,0.1)",
+    padding: "6px 10px 4px", maxWidth: "80%",
+    position: "relative", boxShadow: "0 1px 1px rgba(0,0,0,0.1)",
   },
   tailReception: {
-    position: "absolute",
-    top: 0,
-    left: -8,
-    width: 0,
-    height: 0,
-    borderStyle: "solid",
+    position: "absolute", top: 0, left: -8,
+    width: 0, height: 0, borderStyle: "solid",
     borderWidth: "0 10px 10px 0",
     borderColor: "transparent white transparent transparent",
   },
   bubbleEnvoi: {
     backgroundColor: "#DCF8C6",
     borderRadius: "12px 0px 12px 12px",
-    padding: "6px 10px 4px",
-    maxWidth: "80%",
-    position: "relative",
-    boxShadow: "0 1px 1px rgba(0,0,0,0.1)",
+    padding: "6px 10px 4px", maxWidth: "80%",
+    position: "relative", boxShadow: "0 1px 1px rgba(0,0,0,0.1)",
   },
   tailEnvoi: {
-    position: "absolute",
-    top: 0,
-    right: -8,
-    width: 0,
-    height: 0,
-    borderStyle: "solid",
+    position: "absolute", top: 0, right: -8,
+    width: 0, height: 0, borderStyle: "solid",
     borderWidth: "0 0 10px 10px",
     borderColor: "transparent transparent transparent #DCF8C6",
   },
 
   bubbleContact: { fontSize: 12, fontWeight: 700, marginBottom: 3 },
-  bubbleText: { fontSize: 14, color: "#111", lineHeight: 1.45, wordBreak: "break-word" },
+  bubbleText: { fontSize: 14, color: "#111", lineHeight: 1.45, wordBreak: "break-word", whiteSpace: "pre-wrap" },
   bubbleMeta: { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 4, marginTop: 3 },
   bubbleTime: { fontSize: 11, color: "#888" },
   checkmarks: { fontSize: 12, color: "#4FC3F7" },
 
   inputBar: {
     backgroundColor: "#F0F0F0",
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
+    display: "flex", alignItems: "center", gap: 8,
     padding: "8px 12px",
     paddingBottom: "calc(8px + env(safe-area-inset-bottom, 0px))",
-    flexShrink: 0,
-    borderTop: "1px solid #ddd",
+    flexShrink: 0, borderTop: "1px solid #ddd",
   },
   inputWrapper: {
-    flex: 1,
-    backgroundColor: "white",
-    borderRadius: 24,
-    padding: "2px 4px",
+    flex: 1, backgroundColor: "white",
+    borderRadius: 24, padding: "2px 4px",
     boxShadow: "0 1px 2px rgba(0,0,0,0.08)",
   },
   input: {
-    width: "100%",
-    border: "none",
-    outline: "none",
-    padding: "8px 12px",
-    fontSize: 14,
-    backgroundColor: "transparent",
-    color: "#111",
+    width: "100%", border: "none", outline: "none",
+    padding: "8px 12px", fontSize: 14,
+    backgroundColor: "transparent", color: "#111",
   },
   sendBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: "50%",
-    border: "none",
-    color: "white",
-    fontSize: 16,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    flexShrink: 0,
-    transition: "background-color 0.15s",
+    width: 44, height: 44, borderRadius: "50%",
+    border: "none", color: "white", fontSize: 16,
+    display: "flex", alignItems: "center", justifyContent: "center",
+    cursor: "pointer", flexShrink: 0, transition: "background-color 0.15s",
   },
 };

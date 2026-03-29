@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePolling } from "@/hooks/usePolling";
 import BandeauPause from "@/components/vitrine/BandeauPause";
-import PlatMenuCard from "@/components/menu/PlatMenuCard";
+import PlatMenuCardLight from "@/components/menu/PlatMenuCardLight";
 import PanierBar from "@/components/menu/PanierBar";
 import { isOuvert, getProchaineCouverture } from "@/lib/horaires";
 import type { State, Plat } from "@/types";
 
-const VERT = "#1D7A5F";
-const JAUNE = "#F5A623";
+const TERRACOTTA = "#C2410C";
 
 type Vue = "menu" | "checkout";
 type ModePaiement = "retrait" | "enligne" | "";
@@ -32,7 +31,7 @@ export interface PendingOrder {
   total: number;
 }
 
-export default function MenuSnackPage() {
+export default function MenuRestaurantPage() {
   const router = useRouter();
   const state = usePolling<State>("/api/state");
   const [cart, setCart] = useState<LigneCart[]>([]);
@@ -45,10 +44,10 @@ export default function MenuSnackPage() {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const plats: Plat[] = state?.vitrines?.snack?.plats ?? [];
+  const plats: Plat[] = state?.vitrines?.restaurant?.plats ?? [];
   const pause = state?.pause ?? false;
   const messageJour = state?.messageJour ?? null;
-  const horaires = state?.vitrines?.snack?.parametres?.horaires ?? [];
+  const horaires = state?.vitrines?.restaurant?.parametres?.horaires ?? [];
   const ferme = state !== null && !isOuvert(horaires);
   const prochaineCouverture = ferme ? getProchaineCouverture(horaires) : null;
   const commandesBloquees = pause || ferme;
@@ -104,7 +103,7 @@ export default function MenuSnackPage() {
     setModePaiement("");
     setVue("checkout");
     try {
-      const res = await fetch("/api/creneaux/snack");
+      const res = await fetch("/api/creneaux/restaurant");
       const json = await res.json() as { success: boolean; data: { creneaux: string[] } };
       if (json.success) {
         setCreneaux(json.data.creneaux);
@@ -126,7 +125,7 @@ export default function MenuSnackPage() {
   function envoyerCommande() {
     setLoading(true);
     const pending: PendingOrder = {
-      vitrine: "snack",
+      vitrine: "restaurant",
       plats: cart,
       creneau: creneauChoisi,
       telephone: telephone.replace(/\s/g, ""),
@@ -156,10 +155,10 @@ export default function MenuSnackPage() {
         modePaiement={modePaiement}
         erreur={erreur}
         loading={loading}
-        showModal={showModal}
         onCreneauChange={setCreneauChoisi}
         onTelephoneChange={setTelephone}
         onModePaiementChange={setModePaiement}
+        showModal={showModal}
         onConfirmer={confirmerCommande}
         onEnvoyer={envoyerCommande}
         onFermerModal={() => setShowModal(false)}
@@ -169,14 +168,14 @@ export default function MenuSnackPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col max-w-[480px] mx-auto pb-28">
+    <div className="min-h-screen bg-stone-50 flex flex-col max-w-[480px] mx-auto pb-28">
 
       {/* Header */}
-      <header style={{ backgroundColor: VERT }} className="sticky top-0 z-30 flex items-center gap-3 px-4 py-4">
-        <Link href="/snack" className="text-white/80 text-lg leading-none">←</Link>
+      <header className="sticky top-0 z-30 flex items-center gap-3 px-4 py-4 bg-white border-b border-stone-200">
+        <Link href="/restaurant" className="text-stone-500 text-lg leading-none">←</Link>
         <div>
-          <p className="text-xs text-white/60 uppercase tracking-widest font-bold">Menu</p>
-          <h1 className="text-base font-black text-white leading-tight">Chez Tatie Monique</h1>
+          <p className="text-xs uppercase tracking-widest font-bold" style={{ color: TERRACOTTA }}>Menu</p>
+          <h1 className="text-base font-black text-stone-800 leading-tight">Le Quotidien Péi</h1>
         </div>
       </header>
 
@@ -184,10 +183,10 @@ export default function MenuSnackPage() {
 
       {/* Bandeau fermé */}
       {ferme && !pause && (
-        <div className="bg-zinc-800 text-white px-4 py-3 text-center">
+        <div className="bg-stone-800 text-white px-4 py-3 text-center">
           <p className="text-sm font-bold">Nous sommes actuellement fermés</p>
           {prochaineCouverture && (
-            <p className="text-xs text-zinc-400 mt-0.5">
+            <p className="text-xs text-stone-300 mt-0.5">
               Prochaine ouverture : {prochaineCouverture}
             </p>
           )}
@@ -196,14 +195,14 @@ export default function MenuSnackPage() {
 
       {/* Offre du jour */}
       {messageJour && (
-        <div className="mx-4 mt-4 rounded-xl overflow-hidden border-2" style={{ borderColor: JAUNE }}>
-          <div className="px-3 py-1.5 flex items-center gap-2" style={{ backgroundColor: JAUNE }}>
-            <span className="text-xs font-black uppercase tracking-widest text-zinc-900">⭐ Offre du jour</span>
+        <div className="mx-4 mt-4 rounded-xl overflow-hidden border-2" style={{ borderColor: TERRACOTTA }}>
+          <div className="px-3 py-1.5 flex items-center gap-2" style={{ backgroundColor: TERRACOTTA }}>
+            <span className="text-xs font-black uppercase tracking-widest text-white">⭐ Offre du jour</span>
           </div>
-          <div className="bg-zinc-800 px-4 py-3 flex items-center justify-between gap-3">
+          <div className="bg-white px-4 py-3 flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-white leading-snug">{messageJour.texte}</p>
-              <p className="text-sm font-black mt-1" style={{ color: JAUNE }}>
+              <p className="text-sm font-bold text-stone-800 leading-snug">{messageJour.texte}</p>
+              <p className="text-sm font-black mt-1" style={{ color: TERRACOTTA }}>
                 {messageJour.prix.toFixed(2).replace(".", ",")} €
               </p>
             </div>
@@ -213,18 +212,18 @@ export default function MenuSnackPage() {
                   <>
                     <button
                       onClick={() => retirer("offre-du-jour")}
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-zinc-900"
-                      style={{ backgroundColor: JAUNE }}
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-white"
+                      style={{ backgroundColor: TERRACOTTA }}
                     >−</button>
-                    <span className="text-sm font-black text-white w-4 text-center">
+                    <span className="text-sm font-black text-stone-800 w-4 text-center">
                       {quantitePour("offre-du-jour")}
                     </span>
                   </>
                 )}
                 <button
                   onClick={() => ajouter({ id: "offre-du-jour", nom: "Offre du jour", prix: messageJour.prix, disponible: true, description: messageJour.texte, categorie: "", affichageSiRupture: "griser" })}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-zinc-900"
-                  style={{ backgroundColor: JAUNE }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-white"
+                  style={{ backgroundColor: TERRACOTTA }}
                 >+</button>
               </div>
             )}
@@ -234,14 +233,14 @@ export default function MenuSnackPage() {
 
       {/* Pills catégories */}
       {categories.size > 0 && (
-        <div className="sticky top-[56px] z-20 bg-zinc-900 border-b border-zinc-800">
+        <div className="sticky top-[57px] z-20 bg-stone-50 border-b border-stone-200">
           <div className="flex gap-2 px-4 py-3 overflow-x-auto scrollbar-none">
             {Array.from(categories.keys()).map((cat) => (
               <button
                 key={cat}
                 onClick={() => scrollToCategorie(cat)}
-                className="shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide whitespace-nowrap"
-                style={{ backgroundColor: JAUNE, color: "#111" }}
+                className="shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide whitespace-nowrap text-white"
+                style={{ backgroundColor: TERRACOTTA }}
               >
                 {cat}
               </button>
@@ -255,7 +254,7 @@ export default function MenuSnackPage() {
         {categories.size === 0 && (
           <div className="space-y-3 pt-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-24 bg-zinc-800 rounded animate-pulse" />
+              <div key={i} className="h-24 bg-stone-200 rounded-xl animate-pulse" />
             ))}
           </div>
         )}
@@ -267,23 +266,24 @@ export default function MenuSnackPage() {
           >
             <div className="flex items-center gap-3 mb-3">
               <span
-                className="text-xs font-black uppercase tracking-widest px-3 py-1"
-                style={{ backgroundColor: JAUNE, color: "#111" }}
+                className="text-xs font-black uppercase tracking-widest px-3 py-1 text-white"
+                style={{ backgroundColor: TERRACOTTA }}
               >
                 {categorie}
               </span>
-              <div className="flex-1 h-px bg-zinc-700" />
+              <div className="flex-1 h-px bg-stone-200" />
             </div>
 
             <div className="space-y-3">
               {platsDeCat.map((plat) => (
-                <PlatMenuCard
+                <PlatMenuCardLight
                   key={plat.id}
                   plat={plat}
                   quantite={quantitePour(plat.id)}
                   onAjouter={() => ajouter(plat)}
                   onRetirer={() => retirer(plat.id)}
                   pause={commandesBloquees}
+                  accentColor={TERRACOTTA}
                 />
               ))}
             </div>
@@ -347,14 +347,11 @@ function VueCheckout({
   }
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col max-w-[480px] mx-auto">
+    <div className="min-h-screen bg-stone-50 flex flex-col max-w-[480px] mx-auto">
 
-      <header
-        className="sticky top-0 z-30 flex items-center gap-3 px-4 py-4"
-        style={{ backgroundColor: "#1D7A5F" }}
-      >
-        <button onClick={onRetour} className="text-white/80 text-lg leading-none">←</button>
-        <h1 className="text-base font-black text-white">Votre commande</h1>
+      <header className="sticky top-0 z-30 flex items-center gap-3 px-4 py-4 bg-white border-b border-stone-200">
+        <button onClick={onRetour} className="text-stone-500 text-lg leading-none">←</button>
+        <h1 className="text-base font-black text-stone-800">Votre commande</h1>
       </header>
 
       <div className="flex-1 px-4 pt-5 pb-36 space-y-6">
@@ -362,21 +359,21 @@ function VueCheckout({
         {/* Récapitulatif */}
         <section>
           <SectionLabel>Récapitulatif</SectionLabel>
-          <div className="bg-zinc-800 rounded overflow-hidden divide-y divide-zinc-700">
+          <div className="bg-white rounded-xl overflow-hidden border border-stone-200 divide-y divide-stone-100">
             {cart.map((ligne) => (
               <div key={ligne.platId} className="flex justify-between items-center px-4 py-3">
                 <div>
-                  <p className="text-sm font-semibold text-white">{ligne.nom}</p>
-                  <p className="text-xs text-zinc-400">× {ligne.quantite}</p>
+                  <p className="text-sm font-semibold text-stone-800">{ligne.nom}</p>
+                  <p className="text-xs text-stone-400">× {ligne.quantite}</p>
                 </div>
-                <span className="text-sm font-bold text-[#F5A623]">
+                <span className="text-sm font-bold" style={{ color: TERRACOTTA }}>
                   {(ligne.prix * ligne.quantite).toFixed(2).replace(".", ",")} €
                 </span>
               </div>
             ))}
-            <div className="flex justify-between items-center px-4 py-3 bg-zinc-700">
-              <span className="text-sm font-black text-white uppercase tracking-wide">Total</span>
-              <span className="text-base font-black text-[#F5A623]">
+            <div className="flex justify-between items-center px-4 py-3 bg-stone-100">
+              <span className="text-sm font-black text-stone-700 uppercase tracking-wide">Total</span>
+              <span className="text-base font-black" style={{ color: TERRACOTTA }}>
                 {total.toFixed(2).replace(".", ",")} €
               </span>
             </div>
@@ -387,8 +384,8 @@ function VueCheckout({
         <section>
           <SectionLabel>Créneau de retrait</SectionLabel>
           {creneaux.length === 0 ? (
-            <div className="bg-zinc-800 rounded px-4 py-4 text-center">
-              <p className="text-sm text-zinc-400 italic">Aucun créneau disponible.</p>
+            <div className="bg-white rounded-xl border border-stone-200 px-4 py-4 text-center">
+              <p className="text-sm text-stone-400 italic">Aucun créneau disponible.</p>
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-2">
@@ -396,11 +393,11 @@ function VueCheckout({
                 <button
                   key={c}
                   onClick={() => selectionnerCreneau(c)}
-                  className="py-3 px-2 rounded text-xs font-bold transition-colors leading-tight"
+                  className="py-3 px-2 rounded-xl text-xs font-bold transition-colors leading-tight border"
                   style={
                     creneauChoisi === c
-                      ? { backgroundColor: "#F5A623", color: "#111" }
-                      : { backgroundColor: "#27272a", color: "#a1a1aa" }
+                      ? { backgroundColor: TERRACOTTA, color: "#fff", borderColor: TERRACOTTA }
+                      : { backgroundColor: "#fff", color: "#78716c", borderColor: "#e7e5e4" }
                   }
                 >
                   {i === 0 ? "Au plus tôt" : c}
@@ -413,7 +410,7 @@ function VueCheckout({
         {/* WhatsApp */}
         <section ref={whatsappRef}>
           <SectionLabel>Numéro WhatsApp</SectionLabel>
-          <div className="bg-zinc-800 rounded overflow-hidden">
+          <div className="bg-white rounded-xl border border-stone-200 overflow-hidden">
             <div className="flex items-center px-4 py-3 gap-3">
               <span className="text-lg">📱</span>
               <input
@@ -421,12 +418,12 @@ function VueCheckout({
                 value={telephone}
                 onChange={(e) => onTelephoneChange(e.target.value)}
                 placeholder="0692 00 00 00"
-                className="flex-1 bg-transparent text-white text-sm font-medium placeholder-zinc-500 outline-none"
+                className="flex-1 bg-transparent text-stone-800 text-sm font-medium placeholder-stone-400 outline-none"
                 maxLength={14}
               />
             </div>
           </div>
-          <p className="text-xs text-zinc-500 mt-2 px-1">
+          <p className="text-xs text-stone-400 mt-2 px-1">
             Vous recevrez un message quand votre commande sera prête.
           </p>
         </section>
@@ -440,15 +437,15 @@ function VueCheckout({
               className="flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 transition-colors"
               style={
                 modePaiement === "retrait"
-                  ? { borderColor: "#F5A623", backgroundColor: "#F5A62318" }
-                  : { borderColor: "#3f3f46", backgroundColor: "#27272a" }
+                  ? { borderColor: TERRACOTTA, backgroundColor: "#FFF7ED" }
+                  : { borderColor: "#e7e5e4", backgroundColor: "#fff" }
               }
             >
               <span className="text-2xl">🏪</span>
-              <span className="text-xs font-black text-white uppercase tracking-wide text-center leading-tight">
+              <span className="text-xs font-black text-stone-700 uppercase tracking-wide text-center leading-tight">
                 Payer au retrait
               </span>
-              <span className="text-[10px] text-zinc-400">Espèces ou CB</span>
+              <span className="text-[10px] text-stone-400">Espèces ou CB</span>
             </button>
 
             <button
@@ -456,35 +453,33 @@ function VueCheckout({
               className="flex flex-col items-center gap-2 py-4 px-3 rounded-xl border-2 transition-colors"
               style={
                 modePaiement === "enligne"
-                  ? { borderColor: "#F5A623", backgroundColor: "#F5A62318" }
-                  : { borderColor: "#3f3f46", backgroundColor: "#27272a" }
+                  ? { borderColor: TERRACOTTA, backgroundColor: "#FFF7ED" }
+                  : { borderColor: "#e7e5e4", backgroundColor: "#fff" }
               }
             >
               <span className="text-2xl">💳</span>
-              <span className="text-xs font-black text-white uppercase tracking-wide text-center leading-tight">
+              <span className="text-xs font-black text-stone-700 uppercase tracking-wide text-center leading-tight">
                 Payer en ligne
               </span>
-              <span className="text-[10px] text-zinc-400">Carte bancaire</span>
+              <span className="text-[10px] text-stone-400">Carte bancaire</span>
             </button>
           </div>
         </section>
 
-        {/* Erreur */}
         {erreur && (
-          <div className="bg-red-900/50 border border-red-700 rounded px-4 py-3">
-            <p className="text-sm text-red-300 font-medium">{erreur}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+            <p className="text-sm text-red-600 font-medium">{erreur}</p>
           </div>
         )}
 
       </div>
 
-      {/* CTA sticky */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] px-4 py-3 bg-zinc-900 border-t border-zinc-700 z-40">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] px-4 py-3 bg-white border-t border-stone-200 z-40">
         <button
           onClick={onConfirmer}
           disabled={loading || creneaux.length === 0}
-          className="w-full py-4 font-black text-sm uppercase tracking-widest text-zinc-900 disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ backgroundColor: "#F5A623" }}
+          className="w-full py-4 font-black text-sm uppercase tracking-widest text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ backgroundColor: TERRACOTTA }}
         >
           {loading ? "Envoi en cours…" : "Valider ma commande →"}
         </button>
@@ -492,34 +487,34 @@ function VueCheckout({
 
       {/* Modal confirmation WhatsApp */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 max-w-[480px] mx-auto">
-          <div className="w-full bg-zinc-900 rounded-t-2xl px-5 pt-6 pb-8 border-t border-zinc-700">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 max-w-[480px] mx-auto">
+          <div className="w-full bg-white rounded-t-2xl px-5 pt-6 pb-8 border-t border-stone-200">
             <div className="flex items-center gap-3 mb-4">
               <span className="text-2xl">📲</span>
-              <h2 className="text-base font-black text-white leading-tight">
+              <h2 className="text-base font-black text-stone-800 leading-tight">
                 Confirmation par WhatsApp
               </h2>
             </div>
-            <p className="text-sm text-zinc-300 leading-relaxed mb-4">
+            <p className="text-sm text-stone-600 leading-relaxed mb-4">
               Pour finaliser votre commande, vous allez être redirigé vers{" "}
-              <span className="font-bold text-white">WhatsApp</span>.
+              <span className="font-bold text-stone-800">WhatsApp</span>.
               Un message pré-rempli sera prêt à envoyer — il suffit d&apos;appuyer sur{" "}
-              <span className="font-bold text-white">Envoyer</span>.
+              <span className="font-bold text-stone-800">Envoyer</span>.
             </p>
-            <div className="bg-zinc-800 rounded-xl px-4 py-3 mb-5 space-y-1.5">
+            <div className="bg-stone-50 rounded-xl border border-stone-200 px-4 py-3 mb-5 space-y-1.5">
               <div className="flex justify-between text-sm">
-                <span className="text-zinc-400">Créneau</span>
-                <span className="font-bold text-white">{creneauChoisi}</span>
+                <span className="text-stone-400">Créneau</span>
+                <span className="font-bold text-stone-800">{creneauChoisi}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-zinc-400">Total</span>
-                <span className="font-bold" style={{ color: "#F5A623" }}>
+                <span className="text-stone-400">Total</span>
+                <span className="font-bold" style={{ color: TERRACOTTA }}>
                   {total.toFixed(2).replace(".", ",")} €
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-zinc-400">Paiement</span>
-                <span className="font-bold text-white">
+                <span className="text-stone-400">Paiement</span>
+                <span className="font-bold text-stone-800">
                   {modePaiement === "enligne" ? "En ligne" : "Au retrait"}
                 </span>
               </div>
@@ -527,14 +522,14 @@ function VueCheckout({
             <button
               onClick={onEnvoyer}
               disabled={loading}
-              className="w-full py-4 font-black text-sm uppercase tracking-widest text-zinc-900 mb-3 disabled:opacity-50"
-              style={{ backgroundColor: "#F5A623" }}
+              className="w-full py-4 font-black text-sm uppercase tracking-widest text-white mb-3 disabled:opacity-50"
+              style={{ backgroundColor: TERRACOTTA }}
             >
               {loading ? "Redirection…" : "Continuer vers WhatsApp →"}
             </button>
             <button
               onClick={onFermerModal}
-              className="w-full py-3 text-sm font-bold text-zinc-400"
+              className="w-full py-3 text-sm font-bold text-stone-400"
             >
               Modifier ma commande
             </button>
@@ -546,18 +541,16 @@ function VueCheckout({
   );
 }
 
-/* ── Helpers ───────────────────────────────────────────────── */
-
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-3">
       <span
-        className="text-xs font-black uppercase tracking-widest px-3 py-1"
-        style={{ backgroundColor: "#F5A623", color: "#111" }}
+        className="text-xs font-black uppercase tracking-widest px-3 py-1 text-white"
+        style={{ backgroundColor: TERRACOTTA }}
       >
         {children}
       </span>
-      <div className="flex-1 h-px bg-zinc-700" />
+      <div className="flex-1 h-px bg-stone-200" />
     </div>
   );
 }
