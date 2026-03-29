@@ -1,4 +1,5 @@
 import type { State, TypeVitrine, WhatsAppMessage, VitrineState } from "@/types";
+import { getNowReunion } from "@/lib/timezone";
 import snackData from "@/data/snack.json";
 import restaurantData from "@/data/restaurant.json";
 import pizzeriaData from "@/data/pizzeria.json";
@@ -42,7 +43,7 @@ const g = global as typeof globalThis & {
 if (!g._state)             g._state             = { ...initialState };
 if (!g._whatsappMessages)  g._whatsappMessages  = [];
 if (!g._commandeCounter)   g._commandeCounter   = 1;
-if (!g._lastResetDate)     g._lastResetDate     = new Date().toDateString();
+if (!g._lastResetDate)     g._lastResetDate     = getNowReunion().dateString;
 
 // ── KV helpers ───────────────────────────────────────────────
 
@@ -79,7 +80,7 @@ export async function resetAll(): Promise<void> {
   g._state            = { ...initialState };
   g._whatsappMessages = [];
   g._commandeCounter  = 1;
-  g._lastResetDate    = new Date().toDateString();
+  g._lastResetDate    = getNowReunion().dateString;
   g._kvInitialized    = true; // éviter de recharger l'ancien state depuis KV
   await persistAll();
 }
@@ -126,7 +127,7 @@ function verifierExpirationMessageJour(): void {
 }
 
 function verifierResetMinuit(): void {
-  const today = new Date().toDateString();
+  const today = getNowReunion().dateString;
   if (today === g._lastResetDate) return;
   g._lastResetDate = today;
 

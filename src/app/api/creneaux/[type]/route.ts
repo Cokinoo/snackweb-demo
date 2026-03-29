@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getState, initializeFromKV } from "@/store/state";
+import { getNowReunion } from "@/lib/timezone";
 import type { ApiResponse, TypeVitrine } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -35,12 +36,11 @@ export async function GET(
     const vitrine = state.vitrines[type];
     const { intervalle, dureeService, capaciteParLot } = vitrine.creneaux;
 
-    const maintenant = new Date();
+    const { jourIndex, minutesActuelles } = getNowReunion();
     const joursMap: Record<number, string> = {
       0: "dim", 1: "lun", 2: "mar", 3: "mer", 4: "jeu", 5: "ven", 6: "sam",
     };
-    const jourActuel = joursMap[maintenant.getDay()];
-    const minutesActuelles = maintenant.getHours() * 60 + maintenant.getMinutes();
+    const jourActuel = joursMap[jourIndex];
 
     const horairesAujourdhui = vitrine.parametres.horaires.filter(
       (h) => h.jour === jourActuel

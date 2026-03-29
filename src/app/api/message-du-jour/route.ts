@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { setState, initializeFromKV, persistAll } from "@/store/state";
+import { getMinuitReunion } from "@/lib/timezone";
 import type { ApiResponse } from "@/types";
 
 export const dynamic = "force-dynamic";
@@ -11,11 +12,6 @@ interface MessageInput {
   action: "publier" | "supprimer";
 }
 
-function getMinuitAujourdhui(): string {
-  const minuit = new Date();
-  minuit.setHours(23, 59, 59, 999);
-  return minuit.toISOString();
-}
 
 export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse>> {
   try {
@@ -48,7 +44,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<ApiResponse>>
         texte: texte.trim(),
         photo: photo ?? undefined,
         prix,
-        expireA: getMinuitAujourdhui(),
+        expireA: getMinuitReunion(),
       };
 
       setState((s) => ({ ...s, messageJour }));

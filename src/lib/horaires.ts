@@ -1,4 +1,5 @@
 import type { Horaire } from "@/types";
+import { getNowReunion } from "@/lib/timezone";
 
 const JOURS_ORDER = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
 
@@ -19,9 +20,8 @@ function parseHeure(heure: string): number {
 }
 
 export function isOuvert(horaires: Horaire[]): boolean {
-  const now = new Date();
-  const jourActuel = JOURS_ORDER[now.getDay()];
-  const minutesActuelles = now.getHours() * 60 + now.getMinutes();
+  const { jourIndex, minutesActuelles } = getNowReunion();
+  const jourActuel = JOURS_ORDER[jourIndex];
 
   return horaires.some(
     (h) =>
@@ -32,9 +32,7 @@ export function isOuvert(horaires: Horaire[]): boolean {
 }
 
 export function getProchaineCouverture(horaires: Horaire[]): string | null {
-  const now = new Date();
-  const jourIndex = now.getDay();
-  const minutesActuelles = now.getHours() * 60 + now.getMinutes();
+  const { jourIndex, minutesActuelles } = getNowReunion();
 
   for (let offset = 0; offset < 7; offset++) {
     const dayIndex = (jourIndex + offset) % 7;
