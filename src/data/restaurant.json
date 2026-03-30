@@ -6,7 +6,7 @@
       "description": "Assortiment d'achards, bouchons et rougail mangue",
       "prix": 5.5,
       "categorie": "Entrées",
-      "photo": "https://picsum.photos/seed/resto-entree/400/300",
+      "photo": "/images/entrée.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
@@ -16,7 +16,7 @@
       "description": "Cabri mariné au massalé, mijotage 3h, riz basmati et grains rouges",
       "prix": 14.0,
       "categorie": "Plats principaux",
-      "photo": "https://picsum.photos/seed/resto-cabri/400/300",
+      "photo": "/images/cabris-massalé.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
@@ -26,7 +26,7 @@
       "description": "Magret de canard, sauce vanille Bourbon, riz parfumé",
       "prix": 16.0,
       "categorie": "Plats principaux",
-      "photo": "https://picsum.photos/seed/resto-canard/400/300",
+      "photo": "/images/canard-vanille.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
@@ -36,7 +36,7 @@
       "description": "Porc en civet vin rouge et épices créoles, riz blanc",
       "prix": 13.0,
       "categorie": "Plats principaux",
-      "photo": "https://picsum.photos/seed/resto-civet/400/300",
+      "photo": "/images/civet-porc.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
@@ -46,7 +46,7 @@
       "description": "Crevettes fraîches au lait de coco et citronnelle, riz jasmin",
       "prix": 15.0,
       "categorie": "Plats principaux",
-      "photo": "https://picsum.photos/seed/resto-crevettes/400/300",
+      "photo": "/images/crevette-coco.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
@@ -56,7 +56,7 @@
       "description": "Plat carry au choix + gâteau patate ou napolitaine maison",
       "prix": 17.0,
       "categorie": "Formules",
-      "photo": "https://picsum.photos/seed/resto-formule/400/300",
+      "photo": "/images/carri-dessert.png",
       "disponible": true,
       "affichageSiRupture": "griser"
     },
