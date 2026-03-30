@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { usePolling } from "@/hooks/usePolling";
-import BandeauPause from "@/components/vitrine/BandeauPause";
 import BandeauMessageJour from "@/components/vitrine/BandeauMessageJour";
-import { isOuvert, groupHoraires } from "@/lib/horaires";
-import type { State, Plat } from "@/types";
+import BandeauPause from "@/components/vitrine/BandeauPause";
+import { usePolling } from "@/hooks/usePolling";
+import { groupHoraires, isOuvert } from "@/lib/horaires";
+import type { Plat, State } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const TERRACOTTA = "#C2410C";
 
@@ -23,28 +23,28 @@ export default function RestaurantVitrinePage() {
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => setStickyVisible(!entry.isIntersecting),
-      { threshold: 0 }
+      { threshold: 0 },
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   const horaires = state?.vitrines?.restaurant?.parametres?.horaires ?? [];
-  const ouvert = state !== null && isOuvert(horaires) && !(state?.pause ?? false);
+  const ouvert =
+    state !== null && isOuvert(horaires) && !(state?.pause ?? false);
   const lignesHoraires = groupHoraires(horaires);
 
   const plats: Plat[] = state?.vitrines?.restaurant?.plats ?? [];
-  const platsVedettes = PLATS_VEDETTES
-    .map((id) => plats.find((p) => p.id === id))
-    .filter((p): p is Plat => !!p);
+  const platsVedettes = PLATS_VEDETTES.map((id) =>
+    plats.find((p) => p.id === id),
+  ).filter((p): p is Plat => !!p);
 
   return (
     <div className="min-h-screen bg-stone-50 flex flex-col max-w-[480px] mx-auto">
-
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="relative h-[55vh] min-h-[340px] flex flex-col justify-end">
         <Image
-          src="https://picsum.photos/seed/resto-hero-peï/480/600"
+          src="/images/restaurant-hero.png"
           alt="Le Quotidien Péi"
           fill
           className="object-cover"
@@ -143,7 +143,10 @@ export default function RestaurantVitrinePage() {
       <section className="px-4 pb-4 space-y-3">
         {platsVedettes.length === 0
           ? Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-24 bg-stone-200 rounded-xl animate-pulse" />
+              <div
+                key={i}
+                className="h-24 bg-stone-200 rounded-xl animate-pulse"
+              />
             ))
           : platsVedettes.map((plat) => (
               <PlatVedette key={plat.id} plat={plat} />
@@ -153,17 +156,19 @@ export default function RestaurantVitrinePage() {
       {/* ── HORAIRES ─────────────────────────────────────────── */}
       <section className="px-4 pb-4 mt-2">
         <div className="rounded-xl overflow-hidden border border-stone-200">
-          <div
-            className="px-4 py-2.5"
-            style={{ backgroundColor: TERRACOTTA }}
-          >
+          <div className="px-4 py-2.5" style={{ backgroundColor: TERRACOTTA }}>
             <span className="text-sm font-black uppercase tracking-wider text-white">
               Horaires
             </span>
           </div>
           <div className="bg-white divide-y divide-stone-100">
             {lignesHoraires.map((l) => (
-              <HoraireLigne key={l.jours} jour={l.jours} heures={l.ferme ? "Fermé" : l.plages} ferme={l.ferme} />
+              <HoraireLigne
+                key={l.jours}
+                jour={l.jours}
+                heures={l.ferme ? "Fermé" : l.plages}
+                ferme={l.ferme}
+              />
             ))}
           </div>
         </div>
@@ -174,7 +179,9 @@ export default function RestaurantVitrinePage() {
         <div className="bg-white rounded-xl border border-stone-200 px-4 py-4 space-y-3">
           <div className="flex items-center gap-3">
             <span className="text-base">📍</span>
-            <p className="text-sm text-stone-600">12 rue de la Paix, Saint-Denis, La Réunion</p>
+            <p className="text-sm text-stone-600">
+              12 rue de la Paix, Saint-Denis, La Réunion
+            </p>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-base">📞</span>
@@ -186,7 +193,9 @@ export default function RestaurantVitrinePage() {
       {/* ── CTA STICKY ───────────────────────────────────────── */}
       <div
         className={`sticky bottom-0 px-4 py-3 bg-white border-t border-stone-200 transition-opacity duration-200 ${
-          stickyVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          stickyVisible
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       >
         {state?.pause ? (
@@ -206,7 +215,6 @@ export default function RestaurantVitrinePage() {
           </Link>
         )}
       </div>
-
     </div>
   );
 }
@@ -224,7 +232,9 @@ function PlatVedette({ plat }: { plat: Plat }) {
       </div>
       <div className="flex-1 px-3 py-3 flex flex-col justify-between min-w-0">
         <div>
-          <p className="text-sm font-bold text-stone-800 leading-tight">{plat.nom}</p>
+          <p className="text-sm font-bold text-stone-800 leading-tight">
+            {plat.nom}
+          </p>
           <p className="text-xs text-stone-400 mt-1 line-clamp-2 leading-snug">
             {plat.description}
           </p>
@@ -249,7 +259,9 @@ function HoraireLigne({
   return (
     <div className="flex justify-between items-center px-4 py-3">
       <span className="text-sm text-stone-600">{jour}</span>
-      <span className={`text-sm font-bold ${ferme ? "text-stone-400 italic" : "text-stone-800"}`}>
+      <span
+        className={`text-sm font-bold ${ferme ? "text-stone-400 italic" : "text-stone-800"}`}
+      >
         {heures}
       </span>
     </div>
