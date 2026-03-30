@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePolling } from "@/hooks/usePolling";
 import BandeauPause from "@/components/vitrine/BandeauPause";
 import BandeauMessageJour from "@/components/vitrine/BandeauMessageJour";
-import { isOuvert } from "@/lib/horaires";
+import { isOuvert, groupHoraires } from "@/lib/horaires";
 import type { State, Plat } from "@/types";
 
 const TERRACOTTA = "#C2410C";
@@ -31,6 +31,7 @@ export default function RestaurantVitrinePage() {
 
   const horaires = state?.vitrines?.restaurant?.parametres?.horaires ?? [];
   const ouvert = state !== null && isOuvert(horaires) && !(state?.pause ?? false);
+  const lignesHoraires = groupHoraires(horaires);
 
   const plats: Plat[] = state?.vitrines?.restaurant?.plats ?? [];
   const platsVedettes = PLATS_VEDETTES
@@ -161,9 +162,9 @@ export default function RestaurantVitrinePage() {
             </span>
           </div>
           <div className="bg-white divide-y divide-stone-100">
-            <HoraireLigne jour="Mar – Jeu" heures="12h00 – 14h00" />
-            <HoraireLigne jour="Ven – Sam" heures="12h00 – 14h00  •  19h00 – 21h30" />
-            <HoraireLigne jour="Dim – Lun" heures="Fermé" ferme />
+            {lignesHoraires.map((l) => (
+              <HoraireLigne key={l.jours} jour={l.jours} heures={l.ferme ? "Fermé" : l.plages} ferme={l.ferme} />
+            ))}
           </div>
         </div>
       </section>

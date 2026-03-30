@@ -90,27 +90,33 @@
     "conserverPlats": true,
     "horaires": [
       {
+        "jour": "lun",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
+        "service": "midi"
+      },
+      {
         "jour": "mar",
-        "ouverture": "12h00",
-        "fermeture": "14h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "mer",
-        "ouverture": "12h00",
-        "fermeture": "14h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "jeu",
-        "ouverture": "12h00",
-        "fermeture": "14h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "ven",
-        "ouverture": "12h00",
-        "fermeture": "14h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
@@ -121,8 +127,8 @@
       },
       {
         "jour": "sam",
-        "ouverture": "12h00",
-        "fermeture": "14h30",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {

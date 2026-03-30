@@ -141,39 +141,51 @@
     "horaires": [
       {
         "jour": "lun",
-        "ouverture": "07h00",
-        "fermeture": "00h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "mar",
-        "ouverture": "07h00",
-        "fermeture": "00h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "mer",
-        "ouverture": "07h00",
-        "fermeture": "00h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "jeu",
-        "ouverture": "07h00",
-        "fermeture": "00h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "ven",
-        "ouverture": "07h00",
-        "fermeture": "00h00",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
+        "service": "midi"
+      },
+      {
+        "jour": "ven",
+        "ouverture": "19h00",
+        "fermeture": "21h30",
+        "service": "soir"
+      },
+      {
+        "jour": "sam",
+        "ouverture": "10h00",
+        "fermeture": "15h00",
         "service": "midi"
       },
       {
         "jour": "sam",
-        "ouverture": "07h00",
-        "fermeture": "00h00",
-        "service": "midi"
+        "ouverture": "19h00",
+        "fermeture": "21h30",
+        "service": "soir"
       },
       {
         "jour": "dim",

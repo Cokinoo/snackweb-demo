@@ -3,6 +3,45 @@ import { getNowReunion } from "@/lib/timezone";
 
 const JOURS_ORDER = ["dim", "lun", "mar", "mer", "jeu", "ven", "sam"];
 
+const JOURS_DISPLAY = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"];
+const JOURS_COURT: Record<string, string> = {
+  lun: "Lun", mar: "Mar", mer: "Mer", jeu: "Jeu",
+  ven: "Ven", sam: "Sam", dim: "Dim",
+};
+
+export interface LigneHoraire {
+  jours: string;
+  plages: string;
+  ferme: boolean;
+}
+
+export function groupHoraires(horaires: Horaire[]): LigneHoraire[] {
+  const byDay = JOURS_DISPLAY.map((jour) => {
+    const entries = horaires
+      .filter((h) => h.jour === jour)
+      .sort((a, b) => parseHeure(a.ouverture) - parseHeure(b.ouverture));
+    const plages = entries.map((h) => `${h.ouverture} – ${h.fermeture}`).join("  •  ");
+    return { jour, plages };
+  });
+
+  const result: LigneHoraire[] = [];
+  let i = 0;
+  while (i < byDay.length) {
+    const sig = byDay[i].plages;
+    let j = i + 1;
+    while (j < byDay.length && byDay[j].plages === sig) j++;
+    const debut = JOURS_COURT[byDay[i].jour];
+    const fin = JOURS_COURT[byDay[j - 1].jour];
+    result.push({
+      jours: j - 1 === i ? debut : `${debut} – ${fin}`,
+      plages: sig,
+      ferme: sig === "",
+    });
+    i = j;
+  }
+  return result;
+}
+
 const JOURS_LABELS: Record<string, string> = {
   lun: "lundi",
   mar: "mardi",

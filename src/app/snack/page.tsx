@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePolling } from "@/hooks/usePolling";
 import BandeauPause from "@/components/vitrine/BandeauPause";
 import BandeauMessageJour from "@/components/vitrine/BandeauMessageJour";
-import { isOuvert } from "@/lib/horaires";
+import { isOuvert, groupHoraires } from "@/lib/horaires";
 import type { State, Plat } from "@/types";
 
 const VERT = "#1D7A5F";
@@ -39,6 +39,7 @@ export default function SnackVitrinePage() {
 
   const horaires = state?.vitrines?.snack?.parametres?.horaires ?? [];
   const ouvert = state !== null && isOuvert(horaires) && !(state?.pause ?? false);
+  const lignesHoraires = groupHoraires(horaires);
 
   const plats: Plat[] = state?.vitrines?.snack?.plats ?? [];
   const platsVedettes = PLATS_VEDETTES
@@ -183,8 +184,9 @@ export default function SnackVitrinePage() {
             </span>
           </div>
           <div className="bg-zinc-800 divide-y divide-zinc-700">
-            <HoraireLigne jour="Lun — Ven" heures="11h30 – 13h30" />
-            <HoraireLigne jour="Sam — Dim" heures="Fermé" ferme />
+            {lignesHoraires.map((l) => (
+              <HoraireLigne key={l.jours} jour={l.jours} heures={l.ferme ? "Fermé" : l.plages} ferme={l.ferme} />
+            ))}
           </div>
         </div>
       </section>
